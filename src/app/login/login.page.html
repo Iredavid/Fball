@@ -1,0 +1,153 @@
+<ion-content [scrollY]="false" [scrollX]="false" class="container">
+  <div>
+    <div class="top">
+      <h1>Fball</h1>
+      <div *ngIf="segmentValue === 'info'">
+        <ion-avatar class="first-pic">
+          <img src="assets/user.png" alt="" />
+        </ion-avatar>
+      </div>
+      <div *ngIf="segmentValue === 'stats'">
+        <ion-avatar class="second-pic" id="open-action-sheet">
+          <ion-icon name="camera" id="camera"></ion-icon>
+          <img src="assets/user.png" alt="" id="myImg" />
+        </ion-avatar>
+
+        <ion-action-sheet
+          trigger="open-action-sheet"
+          class="my-custom-class"
+          [buttons]="actionSheetButtons"
+        >
+        </ion-action-sheet>
+      </div>
+    </div>
+
+    <div class="bottom">
+      <ion-segment
+        [(ngModel)]="segmentValue"
+        (ionChange)="segmentChanged($event)"
+        mode="md"
+      >
+        <ion-segment-button value="info">
+          <ion-label>Login</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="stats">
+          <ion-label>Register</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+
+      <div *ngIf="segmentValue === 'info'">
+        <form [formGroup]="myForm" (ngSubmit)="onSubmit" class="seg">
+          <ion-item lines="none">
+            <ion-label>
+              <ion-note>
+                <ion-icon name="mail-outline"></ion-icon>
+              </ion-note>
+            </ion-label>
+            <ion-input
+              id="email"
+              type="email"
+              class="ion-text-center"
+              placeholder="info@gmail.com"
+              formControlName="email"
+              errorText="Invalid email"
+            >
+            </ion-input>
+          </ion-item>
+
+          <ion-item lines="none">
+            <ion-label>
+              <ion-note>
+                <ion-icon name="lock-closed-outline"> </ion-icon>
+              </ion-note>
+            </ion-label>
+            <ion-input
+              id="password"
+              class="ion-text-center"
+              placeholder="Password"
+              type="password"
+              formControlName="password"
+              minlength="6"
+              errorText="Password must be atleast 6 characters"
+            ></ion-input>
+          </ion-item>
+          <h3><ion-note>Forgot Password</ion-note></h3>
+        </form>
+
+        <ion-button
+          (click)="onSubmit()"
+          type="submit"
+          [disabled]="myForm.invalid"
+          class="login"
+          >Login</ion-button
+        >
+      </div>
+
+      <form
+        [formGroup]="signForm"
+        (ngSubmit)="signUp"
+        *ngIf="segmentValue === 'stats'"
+        class="seg"
+      >
+        <ion-item lines="none">
+          <ion-label>
+            <ion-note>
+              <ion-icon name="person-outline"> </ion-icon>
+            </ion-note>
+          </ion-label>
+          <ion-input
+            type="text"
+            id="user"
+            class="ion-text-center"
+            placeholder="Username"
+            errorText="cannot be left empty"
+            formControlName="name"
+          >
+          </ion-input>
+        </ion-item>
+
+        <ion-item lines="none">
+          <ion-label>
+            <ion-note>
+              <ion-icon name="mail-outline"></ion-icon>
+            </ion-note>
+          </ion-label>
+          <ion-input
+            type="email"
+            id="register-email"
+            class="ion-text-center"
+            placeholder="info@gmail.com"
+            formControlName="email"
+            errorText="Invalid email"
+          >
+          </ion-input>
+        </ion-item>
+
+        <ion-item lines="none">
+          <ion-label>
+            <ion-note>
+              <ion-icon name="lock-closed-outline"> </ion-icon>
+            </ion-note>
+          </ion-label>
+          <ion-input
+            class="ion-text-center"
+            id="register"
+            placeholder="Password"
+            type="password"
+            formControlName="password"
+            minlength="6"
+            errorText="Password must be atleast 6 characters"
+          ></ion-input>
+        </ion-item>
+        <div class="option">
+          <ion-button
+            (click)="signUp()"
+            type="submit"
+            [disabled]="signForm.invalid"
+            >Sign Up</ion-button
+          >
+        </div>
+      </form>
+    </div>
+  </div>
+</ion-content>

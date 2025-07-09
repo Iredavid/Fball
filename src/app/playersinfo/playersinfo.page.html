@@ -1,0 +1,29 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/tab1"></ion-back-button>
+    </ion-buttons>
+    <ion-title>playersinfo</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <div class="wrap">
+        <h1>playersinfo</h1>
+        <ion-icon
+          name="pencil-outline"
+          size="large"
+          (click)="showMultipleInputsAlert()"
+        ></ion-icon>
+      </div>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-button (click)="dataService.deleteTopPlayer(player.id)"
+    >Delete</ion-button
+  >
+</ion-content>
+
+<!-- (click)="dataService.updateTopPlayer(player.id)" -->

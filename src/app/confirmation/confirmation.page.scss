@@ -1,0 +1,24 @@
+ion-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
+ion-icon {
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 40%;
+  width: 40%;
+
+}
+
+ion-back-button {
+  margin: 10px;
+  --color: black --padding-start: 0px;
+  display: inline-block;
+  --icon-font-size: 50px
+}

@@ -1,0 +1,77 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button
+        defaultHref="/tabs/tab1"
+        text=""
+        icon="arrow-back-outline"
+      ></ion-back-button>
+    </ion-buttons>
+    <ion-title class="tooltitle">
+      <div class="clubhead">
+        <img src="{{data?.image}}" alt="" />
+        <div class="clubs">
+          <h4>
+            <strong>{{data?.clubName}}</strong>
+          </h4>
+          <p>England</p>
+        </div>
+      </div>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar class="contenttitle">
+      <div class="contenthead">
+        <img src="{{data?.image}}" alt="" />
+        <div class="clubs">
+          <strong>{{data?.clubName}}</strong>
+          <div class="country">
+            <p>England</p>
+          </div>
+        </div>
+      </div>
+          <ion-icon name="bookmark-outline"  (click)="iconAn()" class="save-icon"></ion-icon>
+
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="ion-padding">
+    <div class="nextmatch">
+      <h4>
+        <strong> Next Match </strong>
+      </h4>
+      <div class="chart"></div>
+    </div>
+
+    <div class="form">
+      <h4>
+        <strong> Form </strong>
+      </h4>
+      <div class="chart"></div>
+    </div>
+
+    <div class="formation">
+      <h4>
+        <strong> Frequent Formation </strong>
+      </h4>
+      <div class="chart">
+        <img
+          src="https://thefalse9.com/wp-content/uploads/2024/07/man-united-formation-new-season.jpg"
+          alt=""
+        />
+      </div>
+    </div>
+
+    <div class="formation">
+      <h4>
+        <strong> Players </strong>
+      </h4>
+      <div class="chart"></div>
+    </div>
+
+    <ion-button (click)="dataService.clubDelete(data.id)">delete</ion-button>
+  </div>
+</ion-content>

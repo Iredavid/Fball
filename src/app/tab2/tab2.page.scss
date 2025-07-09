@@ -1,0 +1,106 @@
+ion-title {
+  justify-content: center;
+  font-size: 30px;
+  width: 100%;
+  padding: 0px;
+
+}
+
+.scroll-container {
+  height: 40%;
+  display: flex;
+  overflow-x: auto;
+  gap: 20px;
+  -webkit-overflow-scrolling: touch;
+  /* smooth on iOS */
+  scroll-snap-type: x mandatory;
+  /* optional: snap scrolling */
+  margin-top: 10px;
+  align-items: center;
+  padding-right: 10px;
+  padding-left: 10px;
+  // margin-top: 0px;
+  margin-bottom: 10px;
+
+
+}
+
+.scroll-item {
+
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  flex-shrink: 0;
+  scroll-snap-align: center;
+  /* optional */
+  display: flex;
+  overflow: hidden;
+  margin: auto;
+
+
+
+}
+
+.scroll-item:nth-child(1) {
+  background: url('/assets/lige.png');
+  background-position: center;
+  background-size: cover;
+
+
+}
+
+.scroll-item:nth-child(2) {
+  background: url('/assets/laliga.jpeg');
+  background-position: center;
+  background-size: cover;
+
+
+}
+
+.scroll-item:nth-child(3) {
+  background: url('/assets/pl.jpeg');
+  background-position: center;
+  background-size: cover;
+
+
+}
+
+.scroll-item:nth-child(4) {
+  background: url('/assets/primera.jpeg');
+  background-position: center;
+  background-size: cover;
+
+
+}
+
+
+.scroll-item:nth-child(5) {
+  background: url('/assets/italy.jpeg');
+  background-position: center;
+  background-size: cover;
+
+
+}
+
+.inner {
+  width: 100%;
+  height: 35%;
+  align-self: flex-end;
+  color: white;
+  padding: 0px;
+  margin-bottom: -1px;
+  backdrop-filter: blur(100px);
+  background-color: rgba(0, 0, 0, 0.3);
+
+
+
+  h5 {
+    width: 100%;
+
+    margin: 3px 5px;
+  }
+}
+
+ion-segment {
+  background-color: white;
+}
