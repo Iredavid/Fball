@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { effect, inject, Injectable, signal } from '@angular/core';
 import {
   collection,
   doc,
@@ -9,13 +9,13 @@ import {
   setDoc,
   updateDoc,
   deleteDoc,
-  deleteField,
   arrayUnion,
+  arrayRemove,
 } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular/standalone';
 import { AuthserviceService } from './authservice.service';
-import { FavoritesPage } from '../favorites/favorites.page';
+import { onAuthStateChanged, getAuth } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root',
@@ -31,8 +31,18 @@ export class DataService {
   formData: any;
   favorites: any[] = [];
   authService = inject(AuthserviceService);
+  fave = signal<any[]>([]);
+  faveClub = signal(false);
+  favoPlay = signal<any[]>([]);
+  dataFavorites: any;
 
-  constructor() {}
+  constructor() {
+    effect(() => {
+      console.log(this.fave());
+      console.log(this.faveClub());
+      console.log(this.favoPlay());
+    });
+  }
 
   dataNames: any = [
     { name: 'epl', docName: this.teams },
@@ -86,16 +96,6 @@ export class DataService {
       img: 'https://i.pinimg.com/736x/e5/3c/58/e53c58f92500ab42db1b9f79f15397fd.jpg',
     },
   ];
-
-  // async getUsersById(id: string) {
-  //   const dataRef = doc(this.db, `Users/${id}`);
-  //   const UserDoc = await getDoc(dataRef);
-  //   console.log(UserDoc.exists());
-  //   if (!UserDoc.exists()) {
-  //     return;
-  //   }
-  //   return UserDoc.data();
-  // }
 
   async getItemById(id: string) {
     const dataRef = doc(this.db, `epl/${id}`);
@@ -224,7 +224,9 @@ export class DataService {
     await setDoc(
       clubRef,
       {
-        'favorites.clubs': arrayUnion(id),
+        ['favorites']: {
+          clubs: arrayUnion(id),
+        },
       },
       { merge: true }
     );
@@ -232,14 +234,15 @@ export class DataService {
 
   async removeFavorites(id: any) {
     try {
-      // Remove from user's favorites
+      console.log('Document update: ');
+      // Add single favorite
       const clubRef = doc(this.db, 'Users', this.authService.statusCheck().uid);
-      console.log(id);
-
       await setDoc(
         clubRef,
         {
-          [`favorites.clubs.${id}`]: deleteField(),
+          ['favorites']: {
+            clubs: arrayRemove(id),
+          },
         },
         { merge: true }
       );
@@ -260,54 +263,72 @@ export class DataService {
     }
   }
 
-  async getFavoriteClub() {
-    const userRef = doc(
-      this.db,
-      'Users',
-      `${this.authService.statusCheck().uid}`
-    );
-    const userDoc = await getDoc(userRef);
-    console.log(userDoc);
+  async getFavoriteClub(): Promise<any[]> {
+    const auth = getAuth();
 
-    const userData = userDoc.data();
-    console.log(userData);
-    const favoritePlayers = userData?.['favorites'].players;
-    const favoriteClubs = userData?.['favorites.clubs'];
-    console.log(favoritePlayers);
-    console.log(favoriteClubs);
+    return new Promise((resolve) => {
+      onAuthStateChanged(auth, async (user) => {
+        if (user) {
+          try {
+            const userRef = doc(this.db, 'Users', `${user.uid}`);
+            const userDoc = await getDoc(userRef);
+            const userData = userDoc.data();
+            const favoritePlayers = userData?.['favorites']?.players;
+            const favoriteClubs = userData?.['favorites']?.clubs;
 
-    favoriteClubs.forEach(async (element: any) => {
-      console.log(element);
-      const docRef = doc(this.db, 'epl', element);
-      const docSnap = await getDoc(docRef);
-
-      if (docSnap.exists()) {
-        console.log('Document data:', docSnap.data());
-        this.favorites.push(docSnap.data());
-      } else {
-        console.log('No such document!');
-      }
+            const dataFavorites = [
+              {
+                locate: favoritePlayers,
+                coll: 'players',
+                arr: this.favoPlay,
+              },
+              { locate: favoriteClubs, coll: 'epl', arr: this.fave },
+            ];
+            const favData = await Promise.all(
+              dataFavorites.map(async (elementde: any) => {
+                const clubPromises = elementde.locate.map(
+                  async (element: any) => {
+                    console.log(element);
+                    const docRef = doc(this.db, elementde.coll, element);
+                    const docSnap = await getDoc(docRef);
+                    if (docSnap.exists()) {
+                      console.log('Document exists');
+                      return docSnap.data();
+                    } else {
+                      console.log('No such document!');
+                      return null;
+                    }
+                  }
+                );
+                const clubsData = await Promise.all(clubPromises);
+                elementde.arr.set(clubsData);
+                resolve(clubsData);
+                console.log('All favorite clubs loaded:', elementde.arr());
+              })
+            );
+            return favData;
+          } catch (error) {
+            console.error('Error fetching favorite clubs:', error);
+            return [];
+          }
+        } else {
+          console.log('No user found');
+        }
+        return;
+      });
     });
+  }
+  goToFavoritesClub() {
+    this.faveClub.set(true);
+    this.router.navigate(['favorites']);
+    console.log(this.faveClub());
+    this.getFavoriteClub();
+  }
 
-    // for(const we in favoritePlayers){
-    //   console.log(favoritePlayers[we]);
-
-    // }
-
-    // for () {
-    //   console.log();
-
-    // }
-
-    // const favorites = user?.['favorites.clubs.DkPaF0bVDoJOXTp34sbY'];
-    // console.log(favorites);
-
-    // const clubs = favorites.clubs;
-
-    // await this.getItemById(clubs);
+  goToFavoritesPlayer() {
+    this.faveClub.set(false);
+    this.router.navigate(['favorites']);
+    console.log(this.faveClub());
+    this.getFavoriteClub();
   }
 }
-
-//   goToUsersDoc(id: string) {
-//     this.router.navigate(['tabs/tab1', id]);
-//   }

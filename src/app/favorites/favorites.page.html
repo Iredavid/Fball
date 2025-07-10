@@ -1,34 +1,51 @@
-<ion-header>
-  <ion-buttons>
-    <ion-back-button
-      defaultHref="/tabs/tab1"
-      text=""
-      icon="arrow-back-outline"
-    ></ion-back-button>
-  </ion-buttons>
-</ion-header>
-
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar><h1>Your Picks</h1></ion-toolbar>
-
-    <ion-segment [scrollable]="true" mode="md">
-      @for(club of favorites; track club){
-      <ion-segment-button>
-        <ion-label>{{club.clubName}}</ion-label>
-      </ion-segment-button>
-    }
-      <!-- <ion-segment-button>
-      <ion-label>gbrthe</ion-label>
-    </ion-segment-button>
-      <ion-segment-button>
-      <ion-label>gbrthe</ion-label>
-    </ion-segment-button>
-      <ion-segment-button>
-      <ion-label>gbrthe</ion-label>
-    </ion-segment-button>  <ion-segment-button>
-      <ion-label>gbrthe</ion-label>
-    </ion-segment-button> -->
-    </ion-segment>
+@if(this.dataService.faveClub()) {
+  <ion-header>
+    <ion-buttons>
+      <ion-back-button
+        defaultHref="/tabs/tab1"
+        text=""
+        icon="arrow-back-outline"
+      ></ion-back-button>
+    </ion-buttons>
   </ion-header>
-</ion-content>
+
+  <ion-content [fullscreen]="true">
+    <ion-header collapse="condense">
+      <ion-toolbar><h1>Your Picks</h1></ion-toolbar>
+
+      <ion-segment [scrollable]="true" mode="md">
+        @for(clubs of favorites; track clubs) {
+          <ion-segment-button>
+            <ion-label>{{clubs.clubName}}</ion-label>
+          </ion-segment-button>
+        }
+      </ion-segment>
+    </ion-header>
+  </ion-content>
+}
+
+@if(!this.dataService.faveClub()) {
+  <ion-header>
+    <ion-buttons>
+      <ion-back-button
+        defaultHref="/tabs/tab1"
+        text=""
+        icon="arrow-back-outline"
+      ></ion-back-button>
+    </ion-buttons>
+  </ion-header>
+  
+  <ion-content [fullscreen]="true">
+    <ion-header collapse="condense">
+      <ion-toolbar><h1>Your Players</h1></ion-toolbar>
+  
+      <ion-segment [scrollable]="true" mode="md">
+        @for(player of favoritePlayers; track player) {
+          <ion-segment-button>
+            <ion-label>{{player.firstName}} {{player.surnName}}</ion-label>
+          </ion-segment-button>
+        }
+      </ion-segment>
+    </ion-header>
+  </ion-content>
+}

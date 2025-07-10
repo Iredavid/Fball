@@ -58,7 +58,7 @@
             <ion-label class="label-menu">Favorites</ion-label>
           </ion-item>
           <div slot="content" class="accord">
-            <ion-item lines="none" (click)="goToFavorites()">
+            <ion-item lines="none" (click)="this.dataService.goToFavoritesClub()">
               <ion-icon
                 name="football-outline"
                 slot="start"
@@ -66,7 +66,7 @@
               ></ion-icon>
               <ion-label class="label-menu">Clubs</ion-label>
             </ion-item>
-            <ion-item lines="none">
+            <ion-item lines="none"  (click)="this.dataService.goToFavoritesPlayer()">
               <ion-icon
                 name="person-outline"
                 slot="start"

@@ -3,6 +3,7 @@ import {
   Component,
   OnInit,
   inject,
+  signal,
 } from '@angular/core';
 import { Router } from '@angular/router';
 import {
@@ -107,6 +108,11 @@ export class Tab1Page implements OnInit {
   Userdata:any;
   authservice = inject(AuthserviceService)
   puser: string=''
+  create=signal(false)
+  varry:any;
+players: any;
+clubs: any;
+
 
   constructor() {
     this.dataService.get();
@@ -122,14 +128,13 @@ export class Tab1Page implements OnInit {
 
   ngOnInit() {
 
-
+  this.varry = this.dataService.faveClub()
      this.authservice.getUserProfile();
 
 
     this.footBall = this.dataService.teams;
     this.topPlayer = this.dataService.profile;
     this.europeBest = this.dataService.bestProfile;
-    // this.user = this.dataService.userProfile;
     this.select = this.dataService.select
     this.continents = this.dataService.continents
     this.puser = this.authservice.statusCheck()
@@ -203,18 +208,8 @@ export class Tab1Page implements OnInit {
     this.dataService.addPlayer(firstName, surnName, bgimg);
   }
 
-  // async getUserRouteId() {
-  //   const id = this.route.snapshot.paramMap.get('id');
-  //   if (id) {
-  //     this.Userdata = await this.dataService.getUsersById(id);
-  //     console.log(this.Userdata);
-  //   }
-  // }
 
 
-goToFavorites(){
-  this.router.navigate(['favorites'])
-  // this.dataService.getFavoriteClub();
-}
+
 
 }

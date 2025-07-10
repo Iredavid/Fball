@@ -14,7 +14,7 @@ import {
 } from '@ionic/angular/standalone';
 import { DataService } from '../services/data.service';
 import { ActivatedRoute } from '@angular/router';
-import { pencilOutline } from 'ionicons/icons';
+import { bookmark, bookmarkOutline, pencilOutline } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
 
 @Component({
@@ -42,7 +42,7 @@ export class PlayersinfoPage implements OnInit {
   data: any;
 
   constructor(private alertController: AlertController) {
-    addIcons({ pencilOutline });
+    addIcons({ pencilOutline,bookmarkOutline,bookmark });
   }
 
   ngOnInit() {
@@ -100,5 +100,8 @@ export class PlayersinfoPage implements OnInit {
   }
   sendData() {
     this.dataService.updateTopPlayer(this.player.id);
+  }
+  iconAn(){
+
   }
 }
