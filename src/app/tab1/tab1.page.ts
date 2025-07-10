@@ -214,7 +214,7 @@ export class Tab1Page implements OnInit {
 
 goToFavorites(){
   this.router.navigate(['favorites'])
-  this.dataService.getFavoriteClub();
+  // this.dataService.getFavoriteClub();
 }
 
 }

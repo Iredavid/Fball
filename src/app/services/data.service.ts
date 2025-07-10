@@ -15,6 +15,7 @@ import {
 import { Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular/standalone';
 import { AuthserviceService } from './authservice.service';
+import { FavoritesPage } from '../favorites/favorites.page';
 
 @Injectable({
   providedIn: 'root',
@@ -28,9 +29,10 @@ export class DataService {
   router = inject(Router);
   db = inject(Firestore);
   formData: any;
+  favorites: any[] = [];
   authService = inject(AuthserviceService);
 
-  constructor() { }
+  constructor() {}
 
   dataNames: any = [
     { name: 'epl', docName: this.teams },
@@ -222,8 +224,7 @@ export class DataService {
     await setDoc(
       clubRef,
       {
-      'favorites.clubs': arrayUnion(id)
-      
+        'favorites.clubs': arrayUnion(id),
       },
       { merge: true }
     );
@@ -235,9 +236,13 @@ export class DataService {
       const clubRef = doc(this.db, 'Users', this.authService.statusCheck().uid);
       console.log(id);
 
-      await setDoc(clubRef, {
-        [`favorites.clubs.${id}`]: deleteField()
-      }, { merge: true });
+      await setDoc(
+        clubRef,
+        {
+          [`favorites.clubs.${id}`]: deleteField(),
+        },
+        { merge: true }
+      );
 
       // Optional: Update club document to mark as not favorited
       const docRef = doc(this.db, 'epl', id);
@@ -255,7 +260,6 @@ export class DataService {
     }
   }
 
-
   async getFavoriteClub() {
     const userRef = doc(
       this.db,
@@ -265,23 +269,31 @@ export class DataService {
     const userDoc = await getDoc(userRef);
     console.log(userDoc);
 
-    const userData = userDoc.data()
+    const userData = userDoc.data();
     console.log(userData);
     const favoritePlayers = userData?.['favorites'].players;
     const favoriteClubs = userData?.['favorites.clubs'];
     console.log(favoritePlayers);
     console.log(favoriteClubs);
-    
-for(const me in favoriteClubs){
-  console.log(favoriteClubs[me]);
-  
-}
-// for(const we in favoritePlayers){
-//   console.log(favoritePlayers[we]);
-  
-// }
 
-  
+    favoriteClubs.forEach(async (element: any) => {
+      console.log(element);
+      const docRef = doc(this.db, 'epl', element);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        console.log('Document data:', docSnap.data());
+        this.favorites.push(docSnap.data());
+      } else {
+        console.log('No such document!');
+      }
+    });
+
+    // for(const we in favoritePlayers){
+    //   console.log(favoritePlayers[we]);
+
+    // }
+
     // for () {
     //   console.log();
 
@@ -294,7 +306,6 @@ for(const me in favoriteClubs){
 
     // await this.getItemById(clubs);
   }
-
 }
 
 //   goToUsersDoc(id: string) {

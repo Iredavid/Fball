@@ -13,9 +13,11 @@
     <ion-toolbar><h1>Your Picks</h1></ion-toolbar>
 
     <ion-segment [scrollable]="true" mode="md">
+      @for(club of favorites; track club){
       <ion-segment-button>
-        <ion-label>gbrthe</ion-label>
+        <ion-label>{{club.clubName}}</ion-label>
       </ion-segment-button>
+    }
       <!-- <ion-segment-button>
       <ion-label>gbrthe</ion-label>
     </ion-segment-button>

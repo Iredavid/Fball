@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonButtons,IonBackButton,IonContent,IonSegment,IonSegmentButton, IonLabel,IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { arrowBackOutline } from 'ionicons/icons';
+import { DataService } from '../services/data.service';
 
 @Component({
   selector: 'app-favorites',
@@ -13,12 +14,16 @@ import { arrowBackOutline } from 'ionicons/icons';
   imports: [IonContent, IonButtons,IonBackButton,IonSegment,IonSegmentButton,IonLabel, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
 })
 export class FavoritesPage implements OnInit {
+  favorites: any;
+  dataService = inject(DataService);
 
   constructor() { 
-    addIcons({arrowBackOutline})
+    addIcons({arrowBackOutline});
+    this.dataService.getFavoriteClub();
   }
 
   ngOnInit() {
+    this.favorites = this.dataService.favorites;
   }
 
 }
