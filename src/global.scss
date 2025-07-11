@@ -29,3 +29,25 @@
 // @import "@ionic/angular/css/palettes/dark.always.css"; 
 //  @import "@ionic/angular/css/palettes/dark.class.css";
 // @import '@ionic/angular/css/palettes/dark.system.css';
+
+.flex{
+    display: flex;
+}
+
+.align-center{
+        align-items: center;
+
+}
+
+.justify-center{
+    justify-content: center;
+}
+
+.gp-5{
+    gap : 5px;
+}
+
+.gp-10{
+    gap : 10px;
+}
+

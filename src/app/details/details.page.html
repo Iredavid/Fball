@@ -25,115 +25,86 @@
   <ion-header collapse="condense">
     <ion-toolbar class="contenttitle">
       <div class="contenthead">
-        <img src="{{data?.image}}" alt="" />
-        <div class="clubs">
-          <strong>{{data?.clubName}}</strong>
-          <div class="country">
-            <p>England</p>
+        <div class="flex">
+          <img src="{{data?.image}}" alt="" />
+          
+          <div class="clubs">
+            <strong>{{data?.clubName}}</strong>
+              <p>England</p>
           </div>
         </div>
+        <ion-icon
+          name="bookmark-outline"
+          (click)="iconAn()"
+          class="save-icon"
+          slot="end"
+        ></ion-icon>
       </div>
-          <ion-icon name="bookmark-outline"  (click)="iconAn()" class="save-icon"></ion-icon>
-
     </ion-toolbar>
   </ion-header>
-  <swiper-container
-    space-between="20"
-    pagination="true"
-    pagination-clickable="true"
-    autoplay="true"
-  >
-    <swiper-slide class="scroll-item">
-      <div class="inner">
-        <h5>
-          <b>Tottenham hotspur win dramatically at wembley to secduii hdinhi</b>
-        </h5>
-      </div>
-    </swiper-slide>
-
-    <swiper-slide class="scroll-item">
-      <div class="inner">
-        <h5>
-          <b>Tottenham hotspur win dramatically at wembley to secduii hdinhi</b>
-        </h5>
-      </div>
-    </swiper-slide>
-
-    <swiper-slide class="scroll-item">
-      <div class="inner">
-        <h5>
-          <b>Tottenham hotspur win dramatically at wembley to secduii hdinhi</b>
-        </h5>
-      </div>
-    </swiper-slide>
-
-    <swiper-slide class="scroll-item">
-      <div class="inner">
-        <h5>
-          <b>Tottenham hotspur win dramatically at wembley to secduii hdinhi</b>
-        </h5>
-      </div>
-    </swiper-slide>
-
-    <swiper-slide class="scroll-item">
-      <div class="inner">
-        <h5>
-          <b>Tottenham hotspur win dramatically at wembley to secduii hdinhi</b>
-        </h5>
-      </div>
-    </swiper-slide>
-  </swiper-container>
-
 
   <div class="ion-padding">
-
     <swiper-container
-    space-between="20"
-    pagination="true"
-    pagination-clickable="true"
-    autoplay="true"
-  >
-    <swiper-slide class="scroll-item">
-      <div class="inner">
-        <h5>
-          <b>Tottenham hotspur win dramatically at wembley to secduii hdinhi</b>
-        </h5>
-      </div>
-    </swiper-slide>
+      space-between="20"
+      pagination="true"
+      pagination-clickable="true"
+      autoplay="true"
+    >
+      <swiper-slide class="scroll-item">
+        <div class="inner">
+          <h5>
+            <b
+              >Tottenham hotspur win dramatically at wembley to secduii
+              hdinhi</b
+            >
+          </h5>
+        </div>
+      </swiper-slide>
 
-    <swiper-slide class="scroll-item">
-      <div class="inner">
-        <h5>
-          <b>Tottenham hotspur win dramatically at wembley to secduii hdinhi</b>
-        </h5>
-      </div>
-    </swiper-slide>
+      <swiper-slide class="scroll-item">
+        <div class="inner">
+          <h5>
+            <b
+              >Tottenham hotspur win dramatically at wembley to secduii
+              hdinhi</b
+            >
+          </h5>
+        </div>
+      </swiper-slide>
 
-    <swiper-slide class="scroll-item">
-      <div class="inner">
-        <h5>
-          <b>Tottenham hotspur win dramatically at wembley to secduii hdinhi</b>
-        </h5>
-      </div>
-    </swiper-slide>
+      <swiper-slide class="scroll-item">
+        <div class="inner">
+          <h5>
+            <b
+              >Tottenham hotspur win dramatically at wembley to secduii
+              hdinhi</b
+            >
+          </h5>
+        </div>
+      </swiper-slide>
 
-    <swiper-slide class="scroll-item">
-      <div class="inner">
-        <h5>
-          <b>Tottenham hotspur win dramatically at wembley to secduii hdinhi</b>
-        </h5>
-      </div>
-    </swiper-slide>
+      <swiper-slide class="scroll-item">
+        <div class="inner">
+          <h5>
+            <b
+              >Tottenham hotspur win dramatically at wembley to secduii
+              hdinhi</b
+            >
+          </h5>
+        </div>
+      </swiper-slide>
 
-    <swiper-slide class="scroll-item">
-      <div class="inner">
-        <h5>
-          <b>Tottenham hotspur win dramatically at wembley to secduii hdinhi</b>
-        </h5>
-      </div>
-    </swiper-slide>
-  </swiper-container>
-
+      <swiper-slide class="scroll-item">
+        <div class="inner">
+          <h5>
+            <b
+              >Tottenham hotspur win dramatically at wembley to secduii
+              hdinhi</b
+            >
+          </h5>
+        </div>
+      </swiper-slide>
+    </swiper-container>
 
     <div class="nextmatch">
       <h4>
@@ -168,6 +139,18 @@
       <div class="chart"></div>
     </div>
 
+
+    <div class="formation">
+      <h4>
+        <strong> History </strong>
+      </h4>
+      <div class="chart">
+        <img
+          src=""
+          alt=""
+        />
+      </div>
+    </div>
     <ion-button (click)="dataService.clubDelete(data.id)">delete</ion-button>
   </div>
 </ion-content>

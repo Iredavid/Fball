@@ -59,4 +59,5 @@ export class FavoritesPage implements OnInit {
     
     
   }
+  
 }

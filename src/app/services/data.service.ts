@@ -265,6 +265,8 @@ export class DataService {
     }
   }
 
+
+  
   async getFavorite(): Promise<any[]> {
     const auth = getAuth();
 
@@ -320,12 +322,16 @@ export class DataService {
       });
     });
   }
+
+
   async goToFavoritesClub() {
     this.faveClub.set(true);
     await this.router.navigate(['favorites']);
     console.log(this.faveClub());
     this.getFavorite();
   }
+
+
 
   async goToFavoritesPlayer() {
     this.faveClub.set(false);
