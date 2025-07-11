@@ -48,11 +48,15 @@ export class FavoritesPage implements OnInit {
   }
 
   async ngOnInit() {
-    await this.dataService.getFavoriteClub();
+    await this.dataService.getFavorite();
     this.favorites = this.dataService.fave();
     console.log(this.dataService.fave());
     this.favoritePlayers = this.dataService.favoPlay();
     console.log(this.dataService.favoPlay());
+    console.log(this.favorites);
+    console.log(this.favoritePlayers);
+    
+    
     
   }
 }

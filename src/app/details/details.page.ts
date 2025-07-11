@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { DataService } from '../services/data.service';
@@ -21,12 +21,14 @@ import {
 import { addIcons } from 'ionicons';
 import { arrowBackOutline, bookmarkOutline, bookmark } from 'ionicons/icons';
 import { AuthserviceService } from '../services/authservice.service';
-
+import { register } from 'swiper/element/bundle';
+register();
 @Component({
   selector: 'app-details',
   templateUrl: './details.page.html',
   styleUrls: ['./details.page.scss'],
   standalone: true,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
     IonIcon,
     IonContent,

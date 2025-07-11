@@ -197,3 +197,96 @@
    ion-icon{
     font-size: 48px;
    }
+
+
+swiper-container {
+    --swiper-pagination-color: #ffffff;
+    /* Your desired color */
+    --swiper-pagination-bullet-inactive-color: #c4c4c4;
+    --swiper-pagination-bullet-inactive-opacity: 0.5;
+    width: 90%;
+    height: 40%;
+    // margin-bottom: 10px;
+    -webkit-overflow-scrolling: touch;
+    /* smooth on iOS */
+    scroll-snap-type: x mandatory;
+    /* optional: snap scrolling */
+    margin-top: 10px;
+    gap: 20%;
+    display: flex;
+    overflow-x: auto;
+    padding-left: 2%;
+    padding-right: 2%;
+  }
+  .scroll-item {
+
+    border-radius: 10px;
+    flex-shrink: 0;
+    scroll-snap-align: center;
+    overflow: hidden;
+  }
+  
+  .scroll-item:nth-child(1) {
+    background: url('https://i.pinimg.com/736x/f5/cd/13/f5cd13ec16b849e63d0856cad049444f.jpg');
+    background-position: center;
+    background-size: cover;
+  
+  
+  
+  
+  }
+  
+  .scroll-item:nth-child(2) {
+    background: url('https://i.pinimg.com/736x/f5/cd/13/f5cd13ec16b849e63d0856cad049444f.jpg');
+    background-position: center;
+    background-size: cover;
+  
+  
+  
+  }
+  
+  .scroll-item:nth-child(3) {
+    background: url('https://i.pinimg.com/736x/f5/cd/13/f5cd13ec16b849e63d0856cad049444f.jpg');
+    background-position: center;
+    background-size: cover;
+  
+  
+  
+  }
+  
+  .scroll-item:nth-child(4) {
+    background: url('/assets/pl.jpeg');
+    background-position: center;
+    background-size: cover;
+  
+  
+  
+  }
+  
+  .scroll-item:nth-child(5) {
+    background: url('/assets/bl.jpeg');
+    background-position: center;
+    background-size: cover;
+  
+  
+  
+  }
+  
+
+  .inner {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 40%;
+    align-self: flex-end;
+    color: white;
+    padding: 0px;
+    margin-bottom: -2px;
+    backdrop-filter: blur(100px);
+    background-color: rgb(82, 82, 82);
+  
+    h5 {
+      width: 100%;
+      margin: 3px 5px;
+    }
+  }

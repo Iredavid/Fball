@@ -265,7 +265,7 @@ export class DataService {
     }
   }
 
-  async getFavoriteClub(): Promise<any[]> {
+  async getFavorite(): Promise<any[]> {
     const auth = getAuth();
 
     return new Promise((resolve) => {
@@ -275,8 +275,8 @@ export class DataService {
             const userRef = doc(this.db, 'Users', `${user.uid}`);
             const userDoc = await getDoc(userRef);
             const userData = userDoc.data();
-            const favoritePlayers = userData?.['favorites']?.players;
-            const favoriteClubs = userData?.['favorites']?.clubs;
+            const favoritePlayers = userData?.['favorites']?.players || [];
+            const favoriteClubs = userData?.['favorites']?.clubs || [];
 
             const dataFavorites = [
               {
@@ -304,11 +304,11 @@ export class DataService {
                 );
                 const clubsData = await Promise.all(clubPromises);
                 elementde.arr.set(clubsData);
-                resolve(clubsData);
                 console.log('All favorite clubs loaded:', elementde.arr());
+                return clubsData;
               })
             );
-            return favData;
+            resolve(favData);
           } catch (error) {
             console.error('Error fetching favorite clubs:', error);
             return [];
@@ -320,17 +320,17 @@ export class DataService {
       });
     });
   }
-  goToFavoritesClub() {
+  async goToFavoritesClub() {
     this.faveClub.set(true);
-    this.router.navigate(['favorites']);
+    await this.router.navigate(['favorites']);
     console.log(this.faveClub());
-    this.getFavoriteClub();
+    this.getFavorite();
   }
 
-  goToFavoritesPlayer() {
+  async goToFavoritesPlayer() {
     this.faveClub.set(false);
-    this.router.navigate(['favorites']);
-    console.log(this.faveClub());
-    this.getFavoriteClub();
+    await this.router.navigate(['favorites']);
+    console.log(this.favoPlay());
+    this.getFavorite();
   }
 }
