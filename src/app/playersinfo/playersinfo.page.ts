@@ -41,6 +41,7 @@ export class PlayersinfoPage implements OnInit {
   player: any;
   data: any;
 
+
   constructor(private alertController: AlertController) {
     addIcons({ pencilOutline,bookmarkOutline,bookmark });
   }
@@ -102,6 +103,25 @@ export class PlayersinfoPage implements OnInit {
     this.dataService.updateTopPlayer(this.player.id);
   }
   iconAn(){
+    const iconElement = document.querySelector('.save-icon');
+
+    const currentName = iconElement?.getAttribute('name');
+
+    if (currentName?.includes('-outline')) {
+      // Change to filled version
+      const filledName = currentName.replace('-outline', '');
+      iconElement?.setAttribute('name', filledName);
+      iconElement?.classList.add('saved'); // Add your color class
+      this.dataService.addFavorites(this.player.id,'player','players');
+    } else {
+      // Change back to outline version
+      const outlineName = currentName + '-outline';
+      iconElement?.setAttribute('name', outlineName);
+      iconElement?.classList.remove('saved'); // Remove color class
+      this.dataService.removeFavorites(this.player.id, 'player','players');
+      console.log(this.player.id);
+      
+    }
 
   }
 }

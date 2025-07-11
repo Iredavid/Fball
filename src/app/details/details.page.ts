@@ -52,6 +52,7 @@ export class DetailsPage {
 
   data: any;
   player: any;
+  clubs: [] = [];
 
   constructor() {
     addIcons({ bookmarkOutline, bookmark, arrowBackOutline });
@@ -81,13 +82,13 @@ export class DetailsPage {
       const filledName = currentName.replace('-outline', '');
       iconElement?.setAttribute('name', filledName);
       iconElement?.classList.add('saved'); // Add your color class
-      this.dataService.addFavorites(this.data.id);
+      this.dataService.addFavorites(this.data.id,'epl','clubs');
     } else {
       // Change back to outline version
       const outlineName = currentName + '-outline';
       iconElement?.setAttribute('name', outlineName);
       iconElement?.classList.remove('saved'); // Remove color class
-      this.dataService.removeFavorites(this.data.id);
+      this.dataService.removeFavorites(this.data.id,'epl','clubs');
     }
   }
 

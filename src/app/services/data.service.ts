@@ -208,8 +208,8 @@ export class DataService {
     this.router.navigate(['/tabs/tab1']);
   }
 
-  async addFavorites(id: any) {
-    const docRef = doc(this.db, 'epl', id);
+  async addFavorites(id: any, p0: string,plac:string) {
+    const docRef = doc(this.db, p0, id);
 
     await setDoc(
       docRef,
@@ -220,35 +220,37 @@ export class DataService {
     );
     console.log('Document update: ');
     // Add single favorite
+    
     const clubRef = doc(this.db, 'Users', this.authService.statusCheck().uid);
     await setDoc(
       clubRef,
       {
         ['favorites']: {
-          clubs: arrayUnion(id),
+          [plac]: arrayUnion(id),
         },
       },
       { merge: true }
     );
   }
 
-  async removeFavorites(id: any) {
+  async removeFavorites(id: any, p0: string, plac:string) {
     try {
       console.log('Document update: ');
+      plac
       // Add single favorite
       const clubRef = doc(this.db, 'Users', this.authService.statusCheck().uid);
       await setDoc(
-        clubRef,
+        clubRef, 
         {
           ['favorites']: {
-            clubs: arrayRemove(id),
+            [plac]: arrayRemove(id),
           },
         },
         { merge: true }
       );
 
       // Optional: Update club document to mark as not favorited
-      const docRef = doc(this.db, 'epl', id);
+      const docRef = doc(this.db, p0, id);
       await setDoc(
         docRef,
         {
