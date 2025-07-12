@@ -1,0 +1,36 @@
+ion-header{
+    height: 20%;
+    
+}
+
+ion-content{
+    position: relative;
+}
+.bottom{
+    position:absolute;
+    bottom: 10%;
+}
+.save-icon {
+    font-size: 48px;
+    cursor: pointer;
+    // transition: all 0.3s ease;
+    color: #666; /* Default gray color */
+}
+
+.save-icon.saved {
+    color: white; /* Your custom color (green in this example) */
+    // animation: saveAnimation 0.4s ease;
+}
+
+// @keyframes saveAnimation {
+//     0% { transform: scale(1); }
+//     50% { transform: scale(1.2); }
+//     100% { transform: scale(1); }
+// }
+ion-label{
+    // width: 500px;
+    // height: 100%;
+}
+ion-segment-button{
+    // width: 200px;
+}

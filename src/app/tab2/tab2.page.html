@@ -1,0 +1,28 @@
+
+
+
+
+
+
+
+<ion-content>
+   @for(clubs of footballClub; track clubs){
+     
+    <ion-card  >
+        <div class="wrap"><img alt="" src="{{clubs.image}}" >
+        </div>
+
+      
+      <ion-card-header>
+        <ion-card-title>{{clubs.name}}</ion-card-title>
+        <ion-card-subtitle>{{clubs.year}}</ion-card-subtitle>
+      </ion-card-header>
+  
+      <ion-card-content><strong>{{clubs.desc}}</strong></ion-card-content>
+      
+      
+    </ion-card>
+ 
+  }
+ 
+     </ion-content>
