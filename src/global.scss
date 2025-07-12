@@ -25,6 +25,7 @@
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
 
+<<<<<<< HEAD
 /**
  * Ionic Dark Mode
  * -----------------------------------------------------
@@ -35,3 +36,31 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import '@ionic/angular/css/palettes/dark.system.css';
+=======
+
+// @import "@ionic/angular/css/palettes/dark.always.css"; 
+//  @import "@ionic/angular/css/palettes/dark.class.css";
+// @import '@ionic/angular/css/palettes/dark.system.css';
+
+.flex{
+    display: flex;
+}
+
+.align-center{
+        align-items: center;
+
+}
+
+.justify-center{
+    justify-content: center;
+}
+
+.gp-5{
+    gap : 5px;
+}
+
+.gp-10{
+    gap : 10px;
+}
+
+>>>>>>> 8bdfca4c816053bf7872ae5feaa23a42cc458c84

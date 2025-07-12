@@ -1,5 +1,9 @@
 {
+<<<<<<< HEAD
   "name": "flask1",
+=======
+  "name": "ariwallet",
+>>>>>>> 8bdfca4c816053bf7872ae5feaa23a42cc458c84
   "integrations": {
     "capacitor": {}
   },
