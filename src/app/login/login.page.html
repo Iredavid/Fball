@@ -10,7 +10,7 @@
       <div *ngIf="segmentValue === 'stats'">
         <ion-avatar class="second-pic" id="open-action-sheet">
           <ion-icon name="camera" id="camera"></ion-icon>
-          <img src="assets/user.png" alt="" id="myImg" />
+          <img [src]=img() alt="" id="myImg" />
         </ion-avatar>
 
         <ion-action-sheet

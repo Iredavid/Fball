@@ -42,6 +42,10 @@ export class FavoritesPage implements OnInit {
   authservice = inject(AuthserviceService);
   faveClub=true
   favoritePlayers: any[] = [];
+  selectedClub: any;
+  selectedPlayer: any;
+  ClubData: any;
+  PlayerData: any;
   constructor() {
     addIcons({ arrowBackOutline });
 
@@ -56,8 +60,34 @@ export class FavoritesPage implements OnInit {
     console.log(this.favorites);
     console.log(this.favoritePlayers);
     
+       // Initialize with first club/player if available
+    if (this.favorites.length > 0) {
+      this.selectedClub = this.favorites[0].id;
+      this.onClubSegmentChange();
+    }
     
-    
+    if (this.favoritePlayers.length > 0) {
+      this.selectedPlayer = `${this.favoritePlayers[0].id}`;
+      this.onPlayerSegmentChange();
+    }
   }
-  
+
+  onClubSegmentChange() {
+    if (this.selectedClub) {
+      this.ClubData= this.favorites.find(club => club.id === this.selectedClub)
+      console.log('Selected club data:', this.ClubData);
+    }
+  }
+
+
+   onPlayerSegmentChange() {
+    if (this.selectedPlayer) {
+      this.PlayerData = this.favoritePlayers.find(
+        player => player.id === this.selectedPlayer
+
+      );
+      console.log('Selected player data:', this.PlayerData);
+    }
+  }
+
 }

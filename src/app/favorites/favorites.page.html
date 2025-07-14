@@ -10,24 +10,26 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
- 
   <ion-header collapse="condense">
     <ion-toolbar><h1>Your Picks</h1></ion-toolbar>
 
-    <ion-segment [scrollable]="true" mode="md">
-       @for(clubs of favorites; track clubs) {
-      <ion-segment-button>
+    <ion-segment
+      [scrollable]="true"
+      mode="md"
+      [(ngModel)]="selectedClub"
+      (ionChange)="onClubSegmentChange()"
+    >
+      @for(clubs of favorites; track clubs) {
+      <ion-segment-button [value]="clubs.id">
         <ion-label>{{clubs.clubName}}</ion-label>
       </ion-segment-button>
-    }
-    
+      }
     </ion-segment>
   </ion-header>
 
   <ion-content>
-    <img src="" alt="" />
+    <img src="{{ClubData?.image}}" alt="" />
   </ion-content>
-
 </ion-content>
 } @if(!this.dataService.faveClub()) {
 <ion-header>
@@ -44,13 +46,21 @@
   <ion-header collapse="condense">
     <ion-toolbar><h1>Your Players</h1></ion-toolbar>
 
-    <ion-segment [scrollable]="true" mode="md">
+    <ion-segment
+      [scrollable]="true"
+      mode="md"
+      [(ngModel)]="selectedPlayer"
+      (ionChange)="onPlayerSegmentChange()"
+    >
       @for(player of favoritePlayers; track player) {
-      <ion-segment-button>
+      <ion-segment-button [value]="player.id">
         <ion-label>{{player.firstName}} {{player.surnName}}</ion-label>
       </ion-segment-button>
       }
     </ion-segment>
   </ion-header>
+    <ion-content>
+    <img src="{{PlayerData?.bgimg}}" alt="" />
+  </ion-content>
 </ion-content>
 }

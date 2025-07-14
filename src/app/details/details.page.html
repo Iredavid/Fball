@@ -11,9 +11,7 @@
       <div class="clubhead">
         <img src="{{data?.image}}" alt="" />
         <div class="clubs">
-          <h4>
-            <strong>{{data?.clubName}}</strong>
-          </h4>
+          <strong>{{data?.clubName}}</strong>
           <p>England</p>
         </div>
       </div>
@@ -24,22 +22,21 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar class="contenttitle">
-      <div class="contenthead">
-        <div class="flex">
-          <img src="{{data?.image}}" alt="" />
-          
-          <div class="clubs">
-            <strong>{{data?.clubName}}</strong>
-              <p>England</p>
-          </div>
-        </div>
+      <ion-item class="contenthead" lines="none">
+         <ion-thumbnail slot="start">
+        <img src="{{data?.image}}" alt="" />
+        </ion-thumbnail>
+        <ion-label>
+          <strong>{{data?.clubName}}</strong>
+          <p>England</p>
+        </ion-label>
         <ion-icon
           name="bookmark-outline"
           (click)="iconAn()"
           class="save-icon"
           slot="end"
         ></ion-icon>
-      </div>
+      </ion-item>
     </ion-toolbar>
   </ion-header>
 
@@ -139,16 +136,12 @@
       <div class="chart"></div>
     </div>
 
-
     <div class="formation">
       <h4>
         <strong> History </strong>
       </h4>
       <div class="chart">
-        <img
-          src=""
-          alt=""
-        />
+        <img src="" alt="" />
       </div>
     </div>
     <ion-button (click)="dataService.clubDelete(data.id)">delete</ion-button>

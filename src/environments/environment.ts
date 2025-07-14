@@ -4,12 +4,7 @@
 
 export const environment = {
   production: false,
-<<<<<<< HEAD
-
-firebaseConfig : {
-=======
   firebaseConfig : {
->>>>>>> 8bdfca4c816053bf7872ae5feaa23a42cc458c84
   apiKey: "AIzaSyAG0lzYCQO-pTm7JoZz1ddWnnmcJou7kLk",
   authDomain: "epl-teams-e1b9e.firebaseapp.com",
   projectId: "epl-teams-e1b9e",
@@ -18,11 +13,7 @@ firebaseConfig : {
   appId: "1:257301522193:web:0d7dd5b859f9c4c99c0eb0",
   measurementId: "G-SESG8Y4QV8"
 }
-<<<<<<< HEAD
-}
-=======
 };
->>>>>>> 8bdfca4c816053bf7872ae5feaa23a42cc458c84
 
 /*
  * For easier debugging in development mode, you can import the following file

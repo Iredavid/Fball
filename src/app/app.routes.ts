@@ -5,8 +5,6 @@ export const routes: Routes = [
     path: '',
     loadChildren: () => import('./tabs/tabs.routes').then((m) => m.routes),
   },
-<<<<<<< HEAD
-=======
   {
     path: 'details/:id',
     loadComponent: () => import('./details/details.page').then( m => m.DetailsPage)
@@ -27,5 +25,4 @@ export const routes: Routes = [
     path: 'favorites',
     loadComponent: () => import('./favorites/favorites.page').then( m => m.FavoritesPage)
   },
->>>>>>> 8bdfca4c816053bf7872ae5feaa23a42cc458c84
 ];

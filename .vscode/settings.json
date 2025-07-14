@@ -1,12 +1,8 @@
 {
-<<<<<<< HEAD
-  "typescript.preferences.autoImportFileExcludePatterns": ["@ionic/angular/common", "@ionic/angular"]
-=======
   "typescript.preferences.autoImportFileExcludePatterns": [
     "@ionic/angular/common",
     "@ionic/angular"
   ],
   "IDX.aI.enableInlineCompletion": true,
   "IDX.aI.enableCodebaseIndexing": true
->>>>>>> 8bdfca4c816053bf7872ae5feaa23a42cc458c84
 }

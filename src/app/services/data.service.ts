@@ -15,7 +15,7 @@ import {
 import { Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular/standalone';
 import { AuthserviceService } from './authservice.service';
-import { onAuthStateChanged, getAuth } from '@angular/fire/auth';
+import { onAuthStateChanged, Auth } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root',
@@ -35,6 +35,7 @@ export class DataService {
   faveClub = signal(false);
   favoPlay = signal<any[]>([]);
   dataFavorites: any;
+  auth = inject(Auth);
 
   constructor() {
     effect(() => {
@@ -268,10 +269,8 @@ export class DataService {
 
   
   async getFavorite(): Promise<any[]> {
-    const auth = getAuth();
-
     return new Promise((resolve) => {
-      onAuthStateChanged(auth, async (user) => {
+      onAuthStateChanged(this.auth, async (user) => {
         if (user) {
           try {
             const userRef = doc(this.db, 'Users', `${user.uid}`);
@@ -279,7 +278,6 @@ export class DataService {
             const userData = userDoc.data();
             const favoritePlayers = userData?.['favorites']?.players || [];
             const favoriteClubs = userData?.['favorites']?.clubs || [];
-
             const dataFavorites = [
               {
                 locate: favoritePlayers,
@@ -328,7 +326,7 @@ export class DataService {
     this.faveClub.set(true);
     await this.router.navigate(['favorites']);
     console.log(this.faveClub());
-    this.getFavorite();
+    // this.getFavorite();
   }
 
 
@@ -337,6 +335,6 @@ export class DataService {
     this.faveClub.set(false);
     await this.router.navigate(['favorites']);
     console.log(this.favoPlay());
-    this.getFavorite();
+    // this.getFavorite();
   }
 }

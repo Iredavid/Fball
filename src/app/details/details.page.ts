@@ -63,7 +63,7 @@ export class DetailsPage {
   }
 
    ngOnInit() {
-        this.authservice.getUserProfile();
+         this.authservice.getUserProfile();
    }
 
   async getSingleClub() {

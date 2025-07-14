@@ -83,6 +83,8 @@ export class LoginPage implements OnInit {
   myForm: FormGroup;
   signForm: FormGroup;
   email!: EmailValidator;
+  img= signal('assets/user.png')
+
 
   constructor(private fb: FormBuilder) {
     addIcons({
@@ -167,16 +169,14 @@ export class LoginPage implements OnInit {
         // You can create a data URL like this:
         const dataUrl = `data:image/jpeg;base64,${image.base64String}`;
         console.log('Data URL:', dataUrl);
-           const imgElement =document.getElementById('myImg') as HTMLImageElement
-    imgElement.src= dataUrl
+        const imgElement = document.getElementById('myImg') as HTMLImageElement;
+        imgElement.src = dataUrl;
       } catch (error) {
         console.error('Error picking image:', error);
       }
-      
     };
 
     takePicture();
- 
   }
 
   photo() {
@@ -187,15 +187,15 @@ export class LoginPage implements OnInit {
         resultType: CameraResultType.Base64,
         source: CameraSource.Camera,
       });
-
-      // image.webPath will contain a path that can be set as an image src
-      const imageUrl = image.webPath;
-
-      // Can be set to the src of an image element
-      const profile = signal(imageUrl);
-      console.log(profile());
+    //  console.log('Base64 data:', image.base64String);
+     this.img.set(`data:image/jpeg;base64,${image.base64String}`)
+    console.log(this.img());
+    
     };
 
     takePicture();
+   
+    
   }
+  
 }
