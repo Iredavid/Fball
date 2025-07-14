@@ -11,6 +11,8 @@ import {
   deleteDoc,
   arrayUnion,
   arrayRemove,
+  docData,
+  onSnapshot,
 } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular/standalone';
@@ -31,13 +33,17 @@ export class DataService {
   formData: any;
   favorites: any[] = [];
   authService = inject(AuthserviceService);
-  fave = signal<any[]>([]);
+  fave = signal<any>([]);
   faveClub = signal(false);
-  favoPlay = signal<any[]>([]);
+  favoPlay = signal<any>([]);
   dataFavorites: any;
   auth = inject(Auth);
+  unsubscribe!: import('@angular/fire/firestore').Unsubscribe;
 
   constructor() {
+    // Initialize signals with cached data
+    this.loadCachedFavorites();
+
     effect(() => {
       console.log(this.fave());
       console.log(this.faveClub());
@@ -72,6 +78,32 @@ export class DataService {
     );
 
     return results;
+  }
+
+  loadCachedFavorites() {
+    try {
+      const cachedClubs = localStorage.getItem('favoriteClubs');
+      const cachedPlayers = localStorage.getItem('favoritePlayers');
+
+      if (cachedClubs) {
+        this.fave.set(JSON.parse(cachedClubs));
+      }
+
+      if (cachedPlayers) {
+        this.favoPlay.set(JSON.parse(cachedPlayers));
+      }
+    } catch (error) {
+      console.error('Error loading cached favorites:', error);
+    }
+  }
+
+  saveFavoritesToCache() {
+    try {
+      localStorage.setItem('favoriteClubs', JSON.stringify(this.fave()));
+      localStorage.setItem('favoritePlayers', JSON.stringify(this.favoPlay()));
+    } catch (error) {
+      console.error('Error saving favorites to cache:', error);
+    }
   }
 
   continents: any = [
@@ -209,7 +241,7 @@ export class DataService {
     this.router.navigate(['/tabs/tab1']);
   }
 
-  async addFavorites(id: any, p0: string,plac:string) {
+  async addFavorites(id: any, p0: string, plac: string) {
     const docRef = doc(this.db, p0, id);
 
     await setDoc(
@@ -221,7 +253,7 @@ export class DataService {
     );
     console.log('Document update: ');
     // Add single favorite
-    
+
     const clubRef = doc(this.db, 'Users', this.authService.statusCheck().uid);
     await setDoc(
       clubRef,
@@ -234,14 +266,14 @@ export class DataService {
     );
   }
 
-  async removeFavorites(id: any, p0: string, plac:string) {
+  async removeFavorites(id: any, p0: string, plac: string) {
     try {
       console.log('Document update: ');
-      plac
+      plac;
       // Add single favorite
       const clubRef = doc(this.db, 'Users', this.authService.statusCheck().uid);
       await setDoc(
-        clubRef, 
+        clubRef,
         {
           ['favorites']: {
             [plac]: arrayRemove(id),
@@ -266,61 +298,78 @@ export class DataService {
     }
   }
 
-
-  
-  async getFavorite(): Promise<any[]> {
-    return new Promise((resolve) => {
+  async getFavorite() {
+    return new Promise<void>((resolve, reject) => {
       onAuthStateChanged(this.auth, async (user) => {
-        if (user) {
-          try {
-            const userRef = doc(this.db, 'Users', `${user.uid}`);
-            const userDoc = await getDoc(userRef);
-            const userData = userDoc.data();
-            const favoritePlayers = userData?.['favorites']?.players || [];
-            const favoriteClubs = userData?.['favorites']?.clubs || [];
-            const dataFavorites = [
-              {
-                locate: favoritePlayers,
-                coll: 'players',
-                arr: this.favoPlay,
-              },
-              { locate: favoriteClubs, coll: 'epl', arr: this.fave },
-            ];
-            const favData = await Promise.all(
-              dataFavorites.map(async (elementde: any) => {
-                const clubPromises = elementde.locate.map(
-                  async (element: any) => {
-                    console.log(element);
-                    const docRef = doc(this.db, elementde.coll, element);
-                    const docSnap = await getDoc(docRef);
-                    if (docSnap.exists()) {
-                      console.log('Document exists');
-                      return docSnap.data();
-                    } else {
-                      console.log('No such document!');
-                      return null;
-                    }
-                  }
-                );
-                const clubsData = await Promise.all(clubPromises);
-                elementde.arr.set(clubsData);
-                console.log('All favorite clubs loaded:', elementde.arr());
-                return clubsData;
-              })
-            );
-            resolve(favData);
-          } catch (error) {
-            console.error('Error fetching favorite clubs:', error);
-            return [];
-          }
-        } else {
+        if (!user) {
           console.log('No user found');
+          resolve();
+          return;
         }
-        return;
+
+        const userRef = doc(this.db, 'Users', user.uid);
+
+        // Use `onSnapshot` for real-time updates
+        this.unsubscribe = onSnapshot(
+          userRef,
+          async (userDoc) => {
+            if (!userDoc.exists()) {
+              resolve();
+              return;
+            }
+            const userData = userDoc.data();
+            const favorites = userData?.['favorites'] || {};
+
+            // Process favorite players
+            if (favorites.players?.length) {
+              const playerPromises = favorites.players.map(
+                async (playerId: string) => {
+                  const docRef = doc(this.db, 'players', playerId);
+                  const docSnap = await getDoc(docRef);
+                  return docSnap.exists() ? docSnap.data() : null;
+                }
+              );
+
+              const players = (await Promise.all(playerPromises)).filter(
+                Boolean
+              );
+              this.favoPlay.set(players);
+            } else {
+              this.favoPlay.set([]);
+            }
+
+            // Process favorite clubs
+            if (favorites.clubs?.length) {
+              const clubPromises = favorites.clubs.map(
+                async (clubId: string) => {
+                  const docRef = doc(this.db, 'epl', clubId);
+                  const docSnap = await getDoc(docRef);
+                  return docSnap.exists() ? docSnap.data() : null;
+                }
+              );
+
+              const clubs = (await Promise.all(clubPromises)).filter(Boolean);
+              this.fave.set(clubs);
+            } else {
+              this.fave.set([]);
+            }
+
+            // Save to cache after updating
+            this.saveFavoritesToCache();
+            resolve();
+          },
+
+          (error) => {
+            console.error('Snapshot error:', error);
+            reject(error);
+          }
+        );
+
+        // Cleanup on destroy (if needed)
+        // this.destroyRef.onDestroy(() => unsubscribe());
       });
     });
   }
-
 
   async goToFavoritesClub() {
     this.faveClub.set(true);
@@ -329,12 +378,17 @@ export class DataService {
     // this.getFavorite();
   }
 
-
-
   async goToFavoritesPlayer() {
     this.faveClub.set(false);
     await this.router.navigate(['favorites']);
     console.log(this.favoPlay());
     // this.getFavorite();
+  }
+
+  ngOnDestroy() {
+    // Clean up the onSnapshot listener
+    if (this.unsubscribe) {
+      this.unsubscribe();
+    }
   }
 }

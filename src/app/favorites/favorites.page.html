@@ -1,66 +1,93 @@
 @if(this.dataService.faveClub()) {
 <ion-header>
-  <ion-buttons>
+  <ion-buttons slot="start">
     <ion-back-button
       defaultHref="/tabs/tab1"
       text=""
       icon="arrow-back-outline"
     ></ion-back-button>
   </ion-buttons>
+  <h1>Your Picks</h1>
+  <ion-segment
+    [scrollable]="true"
+    mode="md"
+    [(ngModel)]="selectedClub"
+    (ionChange)="onClubSegmentChange()"
+  >
+    @for(clubs of favorites; track clubs) {
+    <ion-segment-button [value]="clubs.id">
+      <ion-label>{{clubs.clubName}}</ion-label>
+    </ion-segment-button>
+    }
+  </ion-segment>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar><h1>Your Picks</h1></ion-toolbar>
-
-    <ion-segment
-      [scrollable]="true"
-      mode="md"
-      [(ngModel)]="selectedClub"
-      (ionChange)="onClubSegmentChange()"
-    >
-      @for(clubs of favorites; track clubs) {
-      <ion-segment-button [value]="clubs.id">
-        <ion-label>{{clubs.clubName}}</ion-label>
-      </ion-segment-button>
-      }
-    </ion-segment>
-  </ion-header>
-
-  <ion-content>
-    <img src="{{ClubData?.image}}" alt="" />
-  </ion-content>
+  <img src="{{ClubData?.image}}" alt="" />
 </ion-content>
+
 } @if(!this.dataService.faveClub()) {
 <ion-header>
-  <ion-buttons>
+  <ion-buttons slot="start">
     <ion-back-button
       defaultHref="/tabs/tab1"
       text=""
       icon="arrow-back-outline"
     ></ion-back-button>
   </ion-buttons>
+  <h1>Your Players</h1>
+  <ion-segment
+    [scrollable]="true"
+    mode="md"
+    [(ngModel)]="selectedPlayer"
+    (ionChange)="onPlayerSegmentChange()"
+  >
+    @for(player of favoritePlayers; track player) {
+    <ion-segment-button [value]="player.id">
+      <ion-label>{{player.firstName}} {{player.surnName}}</ion-label>
+    </ion-segment-button>
+    }
+  </ion-segment>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar><h1>Your Players</h1></ion-toolbar>
-
-    <ion-segment
-      [scrollable]="true"
-      mode="md"
-      [(ngModel)]="selectedPlayer"
-      (ionChange)="onPlayerSegmentChange()"
-    >
-      @for(player of favoritePlayers; track player) {
-      <ion-segment-button [value]="player.id">
-        <ion-label>{{player.firstName}} {{player.surnName}}</ion-label>
-      </ion-segment-button>
-      }
-    </ion-segment>
-  </ion-header>
-    <ion-content>
+<ion-content>
+  <div class="player-stats-container">
     <img src="{{PlayerData?.bgimg}}" alt="" />
-  </ion-content>
+    <div class="overview">
+      <div class="player-name">{{PlayerData?.firstName}}</div>
+      <div class="player-name">{{PlayerData?.surnName}}</div>
+      <div class="player-position">6, published - Central Midfield</div>
+
+      <div class="stat">
+        <div class="stat-item">
+          <span class="stat-value">26</span>
+          <span class="stat-label">Age</span>
+        </div>
+
+        <div class="stat-item">
+          <span class="stat-value">191</span>
+          <span class="stat-label">Country</span>
+        </div>
+
+        <div class="stat-item">
+          <span class="stat-value">191</span>
+          <span class="stat-label">left</span>
+        </div>
+
+        <div class="stat-item">
+          <span class="stat-value">191</span>
+          <span class="stat-label">Height</span>
+        </div>
+
+        <div class="stat-item">
+          <span class="stat-value">84</span>
+          <span class="stat-label">Weight</span>
+        </div>
+      </div>
+
+      
+    </div>
+  </div>
 </ion-content>
+
 }

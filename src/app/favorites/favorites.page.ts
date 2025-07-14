@@ -46,28 +46,49 @@ export class FavoritesPage implements OnInit {
   selectedPlayer: any;
   ClubData: any;
   PlayerData: any;
+   isLoading = false;
   constructor() {
     addIcons({ arrowBackOutline });
 
   }
 
   async ngOnInit() {
-    await this.dataService.getFavorite();
+   
+        // Initialize with cached data immediately
     this.favorites = this.dataService.fave();
-    console.log(this.dataService.fave());
     this.favoritePlayers = this.dataService.favoPlay();
-    console.log(this.dataService.favoPlay());
-    console.log(this.favorites);
-    console.log(this.favoritePlayers);
     
-       // Initialize with first club/player if available
+    // Initialize segments if data is available
+    this.initializeSegments();
+    
+    // Then fetch fresh data in the background
+    this.isLoading = true;
+    try {
+      await this.dataService.getFavorite();
+      // Update with fresh data
+      this.favorites = this.dataService.fave();
+      this.favoritePlayers = this.dataService.favoPlay();
+      // Re-initialize segments with fresh data
+      this.initializeSegments();
+    } catch (error) {
+      console.error('Error fetching favorites:', error);
+    } finally {
+      this.isLoading = false;
+    }
+    
+  
+  }
+
+   initializeSegments() {
+    // Initialize with first club if available
     if (this.favorites.length > 0) {
       this.selectedClub = this.favorites[0].id;
       this.onClubSegmentChange();
     }
-    
+
+    // Initialize with first player if available
     if (this.favoritePlayers.length > 0) {
-      this.selectedPlayer = `${this.favoritePlayers[0].id}`;
+      this.selectedPlayer = this.favoritePlayers[0].id;
       this.onPlayerSegmentChange();
     }
   }

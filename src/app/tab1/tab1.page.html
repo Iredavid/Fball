@@ -1,4 +1,4 @@
-<ion-menu menuId="first-menu" contentId="main-content">
+<ion-menu menuId="first-menu" contentId="main-content" type="push">
   <ion-header class="menu-header">
     <ion-item lines="none" color="#6157F" class="profileview">
       <ion-thumbnail slot="start">
@@ -44,38 +44,43 @@
         ></ion-icon>
         <ion-label class="label-menu">Share with friends</ion-label>
       </ion-item>
-<ion-accordion-group class="menu-items" >
-  <ion-accordion value="first" >
-    <ion-item slot="header">
-      <ion-icon
-        class="menu-icons"
-        name="bookmark-outline"
-        slot="start"
-        id="profile-icons"
-      ></ion-icon>
-      <ion-label class="label-menu">Favorites</ion-label>
-    </ion-item>
-    <div slot="content" class="accord">
-      <ion-item lines="none" (click)="this.dataService.goToFavoritesClub()">
-        <ion-icon
-          name="football-outline"
-          slot="start"
-          id="profile-icons"
-        ></ion-icon>
-        <ion-label class="label-menu">Clubs</ion-label>
-      </ion-item>
-      <ion-item lines="none" (click)="this.dataService.goToFavoritesPlayer()">
-        <ion-icon
-          name="person-outline"
-          slot="start"
-          id="profile-icons"
-        ></ion-icon>
-        <ion-label class="label-menu">Players</ion-label>
-      </ion-item>
-    </div>
-  </ion-accordion>
-</ion-accordion-group>
-
+      <ion-accordion-group class="menu-items">
+        <ion-accordion value="first">
+          <ion-item slot="header">
+            <ion-icon
+              class="menu-icons"
+              name="bookmark-outline"
+              slot="start"
+              id="profile-icons"
+            ></ion-icon>
+            <ion-label class="label-menu">Favorites</ion-label>
+          </ion-item>
+          <div slot="content" class="accord">
+            <ion-item
+              lines="none"
+              (click)="this.dataService.goToFavoritesClub()"
+            >
+              <ion-icon
+                name="football-outline"
+                slot="start"
+                id="profile-icons"
+              ></ion-icon>
+              <ion-label class="label-menu">Clubs</ion-label>
+            </ion-item>
+            <ion-item
+              lines="none"
+              (click)="this.dataService.goToFavoritesPlayer()"
+            >
+              <ion-icon
+                name="person-outline"
+                slot="start"
+                id="profile-icons"
+              ></ion-icon>
+              <ion-label class="label-menu">Players</ion-label>
+            </ion-item>
+          </div>
+        </ion-accordion>
+      </ion-accordion-group>
     </ion-list>
 
     <ion-list class="bottom">
@@ -93,168 +98,193 @@
   </ion-content>
 </ion-menu>
 
-<ion-header>
-  <ion-item lines="none" class="top">
-    <ion-label class="searchbar"><ion-searchbar></ion-searchbar></ion-label>
-    <ion-avatar slot="start" class="profile-pic" (click)="openFirstMenu()">
-      <img src="assets/user.png" alt="" />
-      <ion-badge></ion-badge>
-    </ion-avatar>
-  </ion-item>
 
-  <ion-segment [scrollable]="true" mode="md">
-    @for(segments of continents; track segments){
-    <ion-segment-button>
-      <ion-label>{{segments.name}}</ion-label>
-    </ion-segment-button>
+<div class="ion-page" id="main-content">
+  <ion-header>
+    <ion-item lines="none" class="top">
+      <ion-label class="searchbar"><ion-searchbar></ion-searchbar></ion-label>
+      <ion-avatar slot="start" class="profile-pic" (click)="openFirstMenu()">
+        <img src="assets/user.png" alt="" />
+        <ion-badge></ion-badge>
+      </ion-avatar>
+    </ion-item>
 
-    }
-  </ion-segment>
-</ion-header>
+    <ion-segment [scrollable]="true" mode="md">
+      @for(segments of continents; track segments){
+      <ion-segment-button>
+        <ion-label>{{segments.name}}</ion-label>
+      </ion-segment-button>
 
-<ion-content [fullscreen]="true" id="main-content">
-  <swiper-container
-    space-between="20"
-    pagination="true"
-    pagination-clickable="true"
-    autoplay="true"
-  >
-    <swiper-slide class="scroll-item">
-      <div class="inner">
-        <h5>
-          <b>Tottenham hotspur win dramatically at wembley to secduii hdinhi</b>
-        </h5>
-      </div>
-    </swiper-slide>
+      }
+    </ion-segment>
+  </ion-header>
 
-    <swiper-slide class="scroll-item">
-      <div class="inner">
-        <h5>
-          <b>Tottenham hotspur win dramatically at wembley to secduii hdinhi</b>
-        </h5>
-      </div>
-    </swiper-slide>
+  <ion-content [fullscreen]="true">
+    <swiper-container
+      space-between="20"
+      pagination="true"
+      pagination-clickable="true"
+      autoplay="true"
+    >
+      <swiper-slide class="scroll-item">
+        <div class="inner">
+          <h5>
+            <b
+              >Tottenham hotspur win dramatically at wembley to secduii
+              hdinhi</b
+            >
+          </h5>
+        </div>
+      </swiper-slide>
 
-    <swiper-slide class="scroll-item">
-      <div class="inner">
-        <h5>
-          <b>Tottenham hotspur win dramatically at wembley to secduii hdinhi</b>
-        </h5>
-      </div>
-    </swiper-slide>
+      <swiper-slide class="scroll-item">
+        <div class="inner">
+          <h5>
+            <b
+              >Tottenham hotspur win dramatically at wembley to secduii
+              hdinhi</b
+            >
+          </h5>
+        </div>
+      </swiper-slide>
 
-    <swiper-slide class="scroll-item">
-      <div class="inner">
-        <h5>
-          <b>Tottenham hotspur win dramatically at wembley to secduii hdinhi</b>
-        </h5>
-      </div>
-    </swiper-slide>
+      <swiper-slide class="scroll-item">
+        <div class="inner">
+          <h5>
+            <b
+              >Tottenham hotspur win dramatically at wembley to secduii
+              hdinhi</b
+            >
+          </h5>
+        </div>
+      </swiper-slide>
 
-    <swiper-slide class="scroll-item">
-      <div class="inner">
-        <h5>
-          <b>Tottenham hotspur win dramatically at wembley to secduii hdinhi</b>
-        </h5>
-      </div>
-    </swiper-slide>
-  </swiper-container>
+      <swiper-slide class="scroll-item">
+        <div class="inner">
+          <h5>
+            <b
+              >Tottenham hotspur win dramatically at wembley to secduii
+              hdinhi</b
+            >
+          </h5>
+        </div>
+      </swiper-slide>
 
-  <div class="LEAGUES">
-    <div class="wrap">
-      <ion-item lines="none" button="false" color="alice-blue" class="sections">
-        <h1 class="lig">
-          <strong>
-            <ion-select interface="popover" placeholder="LEAGUES">
-              @for(leagues of select; track leagues){
-              <ion-select-option>
-                <ion-item lines="none">
-                  <ion-label class="radio">{{leagues.name}}</ion-label>
-                  <ion-avatar slot="end">
-                    <img src="{{leagues.img}}" alt="" />
-                  </ion-avatar>
-                </ion-item>
-              </ion-select-option>
+      <swiper-slide class="scroll-item">
+        <div class="inner">
+          <h5>
+            <b
+              >Tottenham hotspur win dramatically at wembley to secduii
+              hdinhi</b
+            >
+          </h5>
+        </div>
+      </swiper-slide>
+    </swiper-container>
 
-              }
-            </ion-select>
-          </strong>
-        </h1>
-        <ion-note slot="end"> TABLE </ion-note>
-      </ion-item>
-    </div>
-    <div class="kg">
-      <div class="image-grid">
-        @for(clubs of footBall; track clubs){
-        <a (click)="goToDetails(clubs.id, $event)">
-          <img src="{{clubs.image}}" alt="Image 1" />
-        </a>
-        }
-      </div>
-    </div>
-
-    <div class="top-players-section">
-      <ion-item lines="none" color="alice-blue" class="sections">
-        <ion-label
-          ><h1><strong>TOP PLAYERS</strong></h1></ion-label
+    <div class="LEAGUES">
+      <div class="wrap">
+        <ion-item
+          lines="none"
+          button="false"
+          color="alice-blue"
+          class="sections"
         >
-        <ion-note slot="end"> SHOW ALL </ion-note>
-      </ion-item>
-      <div class="top-players">
-        <div class="scroll-container">
-          @for(players of topPlayer; track players){
-          <div class="profile" (click)="goToPlayersInfo(players.id, $event)">
-            <div>
-              <img src="{{players.bgimg}}" alt="" />
-            </div>
+          <h1 class="lig">
+            <strong>
+              <ion-select interface="popover" placeholder="LEAGUES">
+                @for(leagues of select; track leagues){
+                <ion-select-option>
+                  <ion-item lines="none">
+                    <ion-label class="radio">{{leagues.name}}</ion-label>
+                    <ion-avatar slot="end">
+                      <img src="{{leagues.img}}" alt="" />
+                    </ion-avatar>
+                  </ion-item>
+                </ion-select-option>
 
-            <div class="inner2">
-              <h6>{{players.firstName}}</h6>
-              <h6>{{players.surnName}}</h6>
-            </div>
-          </div>
+                }
+              </ion-select>
+            </strong>
+          </h1>
+          <ion-note slot="end"> TABLE </ion-note>
+        </ion-item>
+      </div>
+      <div class="kg">
+        <div class="image-grid">
+          @for(clubs of footBall; track clubs){
+          <a (click)="goToDetails(clubs.id, $event)">
+            <img src="{{clubs.image}}" alt="Image 1" />
+          </a>
           }
         </div>
       </div>
-    </div>
-  </div>
 
-  <ion-item class="eu" lines="none">
-    <ion-label
-      ><h1><strong>EUROPE'S BEST</strong></h1></ion-label
-    >
-    <ion-note slot="end" class="sa"> SHOW ALL </ion-note>
-  </ion-item>
+      <div class="top-players-section">
+        <ion-item lines="none" color="alice-blue" class="sections">
+          <ion-label
+            ><h1><strong>TOP PLAYERS</strong></h1></ion-label
+          >
+          <ion-note slot="end"> SHOW ALL </ion-note>
+        </ion-item>
+        <div class="top-players">
+          <div class="scroll-container">
+            @for(players of topPlayer; track players){
+            <div class="profile" (click)="goToPlayersInfo(players.id, $event)">
+              <div>
+                <img src="{{players.bgimg}}" alt="" />
+              </div>
 
-  <div class="scroll-container">
-    @for(profile of europeBest; track profile){
-    <div class="europes-best">
-      <div>
-        <ion-avatar>
-          <img src="{{profile.img}}" alt="" />
-        </ion-avatar>
-      </div>
-      <div class="inner2">
-        <h6>{{profile.surnName}}</h6>
-        <h6>{{profile.firstName}}</h6>
+              <div class="inner2">
+                <h6>{{players.firstName}}</h6>
+                <h6>{{players.surnName}}</h6>
+              </div>
+            </div>
+            }
+          </div>
+        </div>
       </div>
     </div>
-    }
-  </div>
-  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
-    <ion-fab-button>
-      <ion-icon name="add"></ion-icon>
-    </ion-fab-button>
-    <ion-fab-list side="top">
-      <ion-fab-button (click)="dataService.addEuropeBest()">
-        <ion-icon name="person-add-outline"></ion-icon>
+
+    <ion-item class="eu" lines="none">
+      <ion-label
+        ><h1><strong>EUROPE'S BEST</strong></h1></ion-label
+      >
+      <ion-note slot="end" class="sa"> SHOW ALL </ion-note>
+    </ion-item>
+
+    <div class="scroll-container">
+      @for(profile of europeBest; track profile){
+      <div class="europes-best">
+        <div>
+          <ion-avatar>
+            <img src="{{profile.img}}" alt="" />
+          </ion-avatar>
+        </div>
+        <div class="inner2">
+          <h6>{{profile.surnName}}</h6>
+          <h6>{{profile.firstName}}</h6>
+        </div>
+      </div>
+      }
+    </div>
+
+    
+    <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+      <ion-fab-button>
+        <ion-icon name="add"></ion-icon>
       </ion-fab-button>
-      <ion-fab-button (click)="showMultipleInputsAlert()">
-        <ion-icon name="add-circle-outline"></ion-icon>
-      </ion-fab-button>
-      <ion-fab-button (click)="dataService.addClub()">
-        <ion-icon name="add-circle"></ion-icon>
-      </ion-fab-button>
-    </ion-fab-list>
-  </ion-fab>
-</ion-content>
+      <ion-fab-list side="top">
+        <ion-fab-button (click)="dataService.addEuropeBest()">
+          <ion-icon name="person-add-outline"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-button (click)="showMultipleInputsAlert()">
+          <ion-icon name="add-circle-outline"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-button (click)="dataService.addClub()">
+          <ion-icon name="add-circle"></ion-icon>
+        </ion-fab-button>
+      </ion-fab-list>
+    </ion-fab>
+  </ion-content>
+</div>

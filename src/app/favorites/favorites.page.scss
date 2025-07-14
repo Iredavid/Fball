@@ -1,15 +1,153 @@
-ion-buttons{
+ion-buttons {
     margin-left: 12px;
     margin-top: 12px;
-    
+
 }
-ion-back-button{
+
+ion-back-button {
     font-size: 20px;
     color: black;
 }
-h1{
+
+h1 {
     margin-left: 10px;
     font-size: 35px;
     margin-top: 5px;
     margin-bottom: 0px;
 }
+
+.player-profile {
+    display: flex;
+    justify-content: space-between;
+
+
+    .overview {
+        width: 100%;
+
+        p,
+        strong {
+            margin: 0px;
+            font-size: 35px;
+
+        }
+
+        sub {
+            vertical-align: middle;
+            // font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 20px;
+            //   vertical-align:;
+
+        }
+
+        sub {
+            /* Makes the subscript text smaller */
+            margin-left: -8px;
+            /* Optional: Adds a small space between the number and subscript */
+
+        }
+
+        .club-position {
+            display: flex;
+        }
+    }
+}
+
+
+
+
+.player-stats-container {
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #f5f5f5;
+    display: flex;
+
+    img {
+        height: 45%;
+        width: 45%;
+    }
+    .overview{
+        width: 100%;
+    }
+}
+
+
+.player-name {
+    font-size: 30px;
+    font-weight: bold;
+    width: 100%;
+    color: #333;
+}
+
+.player-position {
+    font-size: 14px;
+    color: #666;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.stat-item {
+  
+  width: 40px;
+  height: 80px;
+  border-radius: 10px;
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
+  background-color: rgb(245, 245, 245);
+
+
+}
+
+.stat-label {
+    font-weight: bold;
+    color: #444;
+    min-width: 60px;
+    display: flex;
+        align-items: start;
+            text-align: center;
+
+
+}
+
+.stat-value {
+    color: #222;
+    display: flex;
+text-align: center;
+
+
+}
+
+.stat {
+   display: flex;
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// /* Responsive adjustments */
+// @media (max-width: 600px) {
+//     .player-card {
+//         flex-direction: column;
+//     }
+
+//     .stat-item {
+//         margin-right: 0;
+//     }
+// }
