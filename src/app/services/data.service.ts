@@ -18,27 +18,23 @@ import { Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular/standalone';
 import { AuthserviceService } from './authservice.service';
 import { onAuthStateChanged, Auth } from '@angular/fire/auth';
-
 @Injectable({
   providedIn: 'root',
 })
 export class DataService {
-  userProfile: any[] = [];
   loadingCtrl = inject(LoadingController);
   teams: any[] = [];
   profile: any[] = [];
   bestProfile: any[] = [];
   router = inject(Router);
   db = inject(Firestore);
-  formData: any;
   favorites: any[] = [];
   authService = inject(AuthserviceService);
   fave = signal<any>([]);
-  faveClub = signal(false);
   favoPlay = signal<any>([]);
   dataFavorites: any;
   auth = inject(Auth);
-  unsubscribe!: import('@angular/fire/firestore').Unsubscribe;
+  // unsubscribe!: import('@angular/fire/firestore').Unsubscribe;
 
   constructor() {
     // Initialize signals with cached data
@@ -46,7 +42,6 @@ export class DataService {
 
     effect(() => {
       console.log(this.fave());
-      console.log(this.faveClub());
       console.log(this.favoPlay());
     });
   }
@@ -55,7 +50,6 @@ export class DataService {
     { name: 'epl', docName: this.teams },
     { name: 'players', docName: this.profile },
     { name: 'continentsBest', docName: this.bestProfile },
-    { name: 'Users', docName: this.userProfile },
   ];
 
   async get() {
@@ -63,7 +57,6 @@ export class DataService {
     const results = await Promise.all(
       this.dataNames.map(async (item: { name: string; docName: any[] }) => {
         let dataRef = collection(this.db, item.name); // Use item.name, not this.dataNames.name
-
         try {
           const querySnapshot = await getDocs(dataRef);
           querySnapshot.forEach((doc: any) => {
@@ -252,8 +245,6 @@ export class DataService {
       { merge: true }
     );
     console.log('Document update: ');
-    // Add single favorite
-
     const clubRef = doc(this.db, 'Users', this.authService.statusCheck().uid);
     await setDoc(
       clubRef,
@@ -282,7 +273,6 @@ export class DataService {
         { merge: true }
       );
 
-      // Optional: Update club document to mark as not favorited
       const docRef = doc(this.db, p0, id);
       await setDoc(
         docRef,
@@ -306,33 +296,35 @@ export class DataService {
           resolve();
           return;
         }
-
+       try{
         const userRef = doc(this.db, 'Users', user.uid);
 
         // Use `onSnapshot` for real-time updates
-        this.unsubscribe = onSnapshot(
-          userRef,
-          async (userDoc) => {
+        const userDoc = await getDoc(userRef)
+        // this.unsubscribe = onSnapshot(
+        //   userRef,
+          // async (userDoc) => {
             if (!userDoc.exists()) {
               resolve();
               return;
             }
             const userData = userDoc.data();
-            const favorites = userData?.['favorites'] || {};
+            const favorites = userData?.['favorites'];
 
             // Process favorite players
             if (favorites.players?.length) {
               const playerPromises = favorites.players.map(
                 async (playerId: string) => {
                   const docRef = doc(this.db, 'players', playerId);
-                  const docSnap = await getDoc(docRef);
-                  return docSnap.exists() ? docSnap.data() : null;
-                }
-              );
-
-              const players = (await Promise.all(playerPromises)).filter(
-                Boolean
-              );
+                  return new Promise((playerResolve)=>{
+                  const unsubscribe = onSnapshot(docRef,(docSnap)=>{
+                  const data = docSnap.exists() ? docSnap.data() : null;
+                  playerResolve(data)
+                  unsubscribe();
+                  });
+                });
+            })
+              const players = await Promise.all(playerPromises);
               this.favoPlay.set(players);
             } else {
               this.favoPlay.set([]);
@@ -343,52 +335,52 @@ export class DataService {
               const clubPromises = favorites.clubs.map(
                 async (clubId: string) => {
                   const docRef = doc(this.db, 'epl', clubId);
-                  const docSnap = await getDoc(docRef);
-                  return docSnap.exists() ? docSnap.data() : null;
-                }
+                return new Promise((clubResolve)=>{
+                const unsubscribe = onSnapshot(docRef,(docSnap)=>{
+                 const data =docSnap.exists() ? docSnap.data() : null;
+                  clubResolve(data)
+                  unsubscribe();
+                  })
+                });
+              }
               );
-
-              const clubs = (await Promise.all(clubPromises)).filter(Boolean);
-              this.fave.set(clubs);
+              const clubs = await Promise.all(clubPromises);
+             this.fave.set(clubs);
             } else {
               this.fave.set([]);
             }
-
             // Save to cache after updating
             this.saveFavoritesToCache();
             resolve();
-          },
-
-          (error) => {
-            console.error('Snapshot error:', error);
+          // },
+          }
+         catch (error) {
+            console.error('Get fave error:', error);
             reject(error);
           }
-        );
+        // );
 
-        // Cleanup on destroy (if needed)
-        // this.destroyRef.onDestroy(() => unsubscribe());
       });
     });
   }
 
-  async goToFavoritesClub() {
-    this.faveClub.set(true);
-    await this.router.navigate(['favorites']);
-    console.log(this.faveClub());
-    // this.getFavorite();
-  }
 
-  async goToFavoritesPlayer() {
-    this.faveClub.set(false);
-    await this.router.navigate(['favorites']);
-    console.log(this.favoPlay());
-    // this.getFavorite();
-  }
+async goToFavoritesClub() {
+  await this.router.navigate(['favorites'], { 
+    state: { showClubs: true }
+  });
+}
+ 
+async goToFavoritesPlayer() {
+  await this.router.navigate(['favorites'], { 
+    state: { showPlayers: true }})
+}
 
-  ngOnDestroy() {
-    // Clean up the onSnapshot listener
-    if (this.unsubscribe) {
-      this.unsubscribe();
-    }
-  }
+
+  // ngOnDestroy() {
+  //   // Clean up the onSnapshot listener
+  //   if (this.unsubscribe) {
+  //     this.unsubscribe();
+  //   }
+  // }
 }

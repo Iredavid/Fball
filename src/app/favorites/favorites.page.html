@@ -1,4 +1,4 @@
-@if(this.dataService.faveClub()) {
+@if(showClubs) {
 <ion-header>
   <ion-buttons slot="start">
     <ion-back-button
@@ -26,16 +26,18 @@
   <img src="{{ClubData?.image}}" alt="" />
 </ion-content>
 
-} @if(!this.dataService.faveClub()) {
+} @if(showPlayers) {
+
 <ion-header>
-  <ion-buttons slot="start">
+  <div class="top">
     <ion-back-button
+      slot="start"
       defaultHref="/tabs/tab1"
       text=""
       icon="arrow-back-outline"
     ></ion-back-button>
-  </ion-buttons>
-  <h1>Your Players</h1>
+    <h1>Your Players</h1>
+  </div>
   <ion-segment
     [scrollable]="true"
     mode="md"
@@ -50,42 +52,77 @@
   </ion-segment>
 </ion-header>
 
-<ion-content>
+<ion-content [fullscreen]="true">
   <div class="player-stats-container">
     <img src="{{PlayerData?.bgimg}}" alt="" />
     <div class="overview">
-      <div class="player-name">{{PlayerData?.firstName}}</div>
+      <div class="player-fname">{{PlayerData?.firstName}}</div>
       <div class="player-name">{{PlayerData?.surnName}}</div>
-      <div class="player-position">6, published - Central Midfield</div>
+      <div class="player-position">
+        <span class="shirt">10</span>-Central Midfield
+      </div>
 
       <div class="stat">
-        <div class="stat-item">
+        <div class="profile">
+          <div class="some">
+            <h1 class="value">200</h1>
+            <h1 class="value">cm</h1>
+          </div>
+          <div class="inner2">
+            <span>Height</span>
+          </div>
+        </div>
+
+        <div class="profile">
+          <div class="some">
+            <span class="value">38</span>
+          </div>
+          <div class="inner2">
+            <span>Age</span>
+          </div>
+        </div>
+
+        <div class="profile">
+          <div class="some">
+            <span class="value">38</span>
+            <br />
+            <span class="value">kg</span>
+          </div>
+          <div class="inner2">
+            <span>Weight</span>
+          </div>
+        </div>
+
+        <div class="profile">
+          <div class="pome">
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/919/919495.png"
+              alt=""
+            />
+            <!-- <span class="value">38</span> -->
+          </div>
+          <div class="inner2">
+            <span>Left</span>
+          </div>
+        </div>
+
+        <!-- <div class="stat-item">
           <span class="stat-value">26</span>
           <span class="stat-label">Age</span>
         </div>
-
-        <div class="stat-item">
-          <span class="stat-value">191</span>
-          <span class="stat-label">Country</span>
-        </div>
-
         <div class="stat-item">
           <span class="stat-value">191</span>
           <span class="stat-label">left</span>
         </div>
-
         <div class="stat-item">
           <span class="stat-value">191</span>
           <span class="stat-label">Height</span>
         </div>
-
         <div class="stat-item">
           <span class="stat-value">84</span>
           <span class="stat-label">Weight</span>
-        </div>
+        </div> -->
       </div>
-
-      
     </div>
   </div>
 </ion-content>

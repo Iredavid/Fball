@@ -128,7 +128,6 @@ clubs: any;
 
   ngOnInit() {
 
-  this.varry = this.dataService.faveClub()
      this.authservice.getUserProfile();
 
 

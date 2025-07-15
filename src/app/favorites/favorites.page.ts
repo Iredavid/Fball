@@ -16,6 +16,7 @@ import { addIcons } from 'ionicons';
 import { arrowBackOutline } from 'ionicons/icons';
 import { DataService } from '../services/data.service';
 import { AuthserviceService } from '../services/authservice.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-favorites',
@@ -40,53 +41,47 @@ export class FavoritesPage implements OnInit {
   favorites: any[] = [];
   dataService = inject(DataService);
   authservice = inject(AuthserviceService);
-  faveClub=true
+  router = inject(Router)
   favoritePlayers: any[] = [];
   selectedClub: any;
   selectedPlayer: any;
   ClubData: any;
   PlayerData: any;
-   isLoading = false;
+  isLoading = false;
+  showPlayers= false;
+  showClubs= false;
   constructor() {
     addIcons({ arrowBackOutline });
-
   }
 
   async ngOnInit() {
-   
-        // Initialize with cached data immediately
+     const navigation = this.router.getCurrentNavigation();
+    if (navigation?.extras?.state) {
+      this.showClubs = await navigation.extras.state['showClubs'] || false;
+      this.showPlayers = await navigation.extras.state['showPlayers'] || false;
+    }
     this.favorites = this.dataService.fave();
     this.favoritePlayers = this.dataService.favoPlay();
-    
-    // Initialize segments if data is available
     this.initializeSegments();
-    
-    // Then fetch fresh data in the background
     this.isLoading = true;
     try {
       await this.dataService.getFavorite();
-      // Update with fresh data
       this.favorites = this.dataService.fave();
       this.favoritePlayers = this.dataService.favoPlay();
-      // Re-initialize segments with fresh data
       this.initializeSegments();
     } catch (error) {
       console.error('Error fetching favorites:', error);
     } finally {
       this.isLoading = false;
     }
-    
-  
   }
 
-   initializeSegments() {
-    // Initialize with first club if available
+  initializeSegments() {
     if (this.favorites.length > 0) {
       this.selectedClub = this.favorites[0].id;
       this.onClubSegmentChange();
     }
 
-    // Initialize with first player if available
     if (this.favoritePlayers.length > 0) {
       this.selectedPlayer = this.favoritePlayers[0].id;
       this.onPlayerSegmentChange();
@@ -95,20 +90,19 @@ export class FavoritesPage implements OnInit {
 
   onClubSegmentChange() {
     if (this.selectedClub) {
-      this.ClubData= this.favorites.find(club => club.id === this.selectedClub)
+      this.ClubData = this.favorites.find(
+        (club) => club.id === this.selectedClub
+      );
       console.log('Selected club data:', this.ClubData);
     }
   }
 
-
-   onPlayerSegmentChange() {
+  onPlayerSegmentChange() {
     if (this.selectedPlayer) {
       this.PlayerData = this.favoritePlayers.find(
-        player => player.id === this.selectedPlayer
-
+        (player) => player.id === this.selectedPlayer
       );
       console.log('Selected player data:', this.PlayerData);
     }
   }
-
 }
