@@ -34,7 +34,6 @@ export class DataService {
   favoPlay = signal<any>([]);
   dataFavorites: any;
   auth = inject(Auth);
-  // unsubscribe!: import('@angular/fire/firestore').Unsubscribe;
 
   constructor() {
     // Initialize signals with cached data
@@ -301,9 +300,6 @@ export class DataService {
 
         // Use `onSnapshot` for real-time updates
         const userDoc = await getDoc(userRef)
-        // this.unsubscribe = onSnapshot(
-        //   userRef,
-          // async (userDoc) => {
             if (!userDoc.exists()) {
               resolve();
               return;
@@ -377,10 +373,4 @@ async goToFavoritesPlayer() {
 }
 
 
-  // ngOnDestroy() {
-  //   // Clean up the onSnapshot listener
-  //   if (this.unsubscribe) {
-  //     this.unsubscribe();
-  //   }
-  // }
 }
