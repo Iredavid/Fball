@@ -55,6 +55,8 @@ export class FavoritesPage implements OnInit {
   }
 
   async ngOnInit() {
+    console.log(document.querySelector('ion-header'));
+    
      const navigation = this.router.getCurrentNavigation();
     if (navigation?.extras?.state) {
       this.showClubs = await navigation.extras.state['showClubs'] || false;
