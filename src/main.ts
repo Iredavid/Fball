@@ -9,6 +9,7 @@ import { environment } from "../src/environments/environment"
 import { defineCustomElements } from '@ionic/pwa-elements/loader';
 import { enableProdMode } from '@angular/core';
 import { getAuth, provideAuth } from '@angular/fire/auth';
+import { provideHttpClient } from '@angular/common/http';
 
 if (!environment.production) {
   enableProdMode();
@@ -21,7 +22,8 @@ bootstrapApplication(AppComponent, {
     provideRouter(routes, withPreloading(PreloadAllModules)),
       provideFirebaseApp(() => initializeApp( environment.firebaseConfig )),
     provideFirestore(() => getFirestore()),
-    provideAuth(()=>getAuth())
+    provideAuth(()=>getAuth()),
+    provideHttpClient(),
   ],
 });
 defineCustomElements(window);

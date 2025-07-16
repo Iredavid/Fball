@@ -84,6 +84,7 @@ export class FavoritesPage implements OnInit {
 
     if (this.favoritePlayers.length > 0) {
       this.selectedPlayer = this.favoritePlayers[0].id;
+      
       this.onPlayerSegmentChange();
     }
   }

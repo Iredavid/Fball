@@ -52,7 +52,7 @@ import {
   caretDownCircle,
   bookmark,
   personOutline,
-  footballOutline
+  footballOutline,
 } from 'ionicons/icons';
 import { ExploreContainerComponent } from '../../environments/explore-container/explore-container.component';
 import { addIcons } from 'ionicons';
@@ -69,8 +69,8 @@ register();
   styleUrls: ['tab1.page.scss'],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
-     IonAccordionGroup,
-  IonAccordion,
+    IonAccordionGroup,
+    IonAccordion,
     IonHeader,
     IonGrid,
     IonCol,
@@ -105,19 +105,34 @@ export class Tab1Page implements OnInit {
   alertController = inject(AlertController);
   // user:any
   route = inject(ActivatedRoute);
-  Userdata:any;
-  authservice = inject(AuthserviceService)
-  puser: string=''
-  create=signal(false)
-  varry:any;
-players: any;
-clubs: any;
-
+  Userdata: any;
+  authservice = inject(AuthserviceService);
+  puser: string = '';
+  create = signal(false);
+  varry: any;
+  players: any;
+  clubs: any;
 
   constructor() {
     this.dataService.get();
-    addIcons({ bookmark,footballOutline,personOutline,ellipsisHorizontalOutline,caretDownCircle,barChartOutline,shareSocialOutline,bookmarkOutline,addCircle,personAddOutline,logOutOutline,addCircleOutline, add, notificationsOutline, homeOutline, pencilOutline });
-  
+    addIcons({
+      bookmark,
+      footballOutline,
+      personOutline,
+      ellipsisHorizontalOutline,
+      caretDownCircle,
+      barChartOutline,
+      shareSocialOutline,
+      bookmarkOutline,
+      addCircle,
+      personAddOutline,
+      logOutOutline,
+      addCircleOutline,
+      add,
+      notificationsOutline,
+      homeOutline,
+      pencilOutline,
+    });
   }
 
   europeBest: any;
@@ -127,24 +142,30 @@ clubs: any;
   footBall: any;
 
   ngOnInit() {
-
-     this.authservice.getUserProfile();
-
+    this.authservice.getUserProfile();
 
     this.footBall = this.dataService.teams;
     this.topPlayer = this.dataService.profile;
     this.europeBest = this.dataService.bestProfile;
-    this.select = this.dataService.select
-    this.continents = this.dataService.continents
-    this.puser = this.authservice.statusCheck()
+    this.select = this.dataService.select;
+    this.continents = this.dataService.continents;
+    this.puser = this.authservice.statusCheck();
     console.log(this.authservice.puser);
-    
+    // this.getUserCredential() ;
   }
+
+  // getUserCredential() {
+  //   this.dataService.getUsers().subscribe({
+  //     next: (response) => {
+  //       console.log('API Response:', response);
+  //     },
+  //   });
+  // }
 
   goToDetails(id: string, event: any) {
     event.preventDefault();
 
-    this.router.navigate(['/details',id]);
+    this.router.navigate(['/details', id]);
   }
 
   goToPlayersInfo(id: string, event: any) {
@@ -206,8 +227,4 @@ clubs: any;
   sendData(firstName: string, surnName: string, bgimg: string) {
     this.dataService.addPlayer(firstName, surnName, bgimg);
   }
-
-
-
-
 }

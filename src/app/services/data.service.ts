@@ -1,4 +1,12 @@
-import { effect, inject, Injectable, signal } from '@angular/core';
+import {
+  effect,
+  inject,
+  Injectable,
+  Injector,
+  NgZone,
+  runInInjectionContext,
+  signal,
+} from '@angular/core';
 import {
   collection,
   doc,
@@ -11,17 +19,20 @@ import {
   deleteDoc,
   arrayUnion,
   arrayRemove,
-  docData,
   onSnapshot,
 } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular/standalone';
 import { AuthserviceService } from './authservice.service';
 import { onAuthStateChanged, Auth } from '@angular/fire/auth';
+import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 @Injectable({
   providedIn: 'root',
 })
 export class DataService {
+  injector = inject(Injector);
+  ngZone = inject(NgZone);
   loadingCtrl = inject(LoadingController);
   teams: any[] = [];
   profile: any[] = [];
@@ -34,16 +45,33 @@ export class DataService {
   favoPlay = signal<any>([]);
   dataFavorites: any;
   auth = inject(Auth);
+  http = inject(HttpClient);
+  API_URL = 'https://v3.football.api-sports.io';
+  API_KEY = '23fdbb07e027825892692fbe35edab88';
+
+     headers = new HttpHeaders({
+           'Content-Type': 'application/json'
+
+    });
 
   constructor() {
-    // Initialize signals with cached data
     this.loadCachedFavorites();
-
     effect(() => {
       console.log(this.fave());
       console.log(this.favoPlay());
     });
   }
+
+  // getUsers(palyer:any,) {
+  //   const url = `${this.API_URL}/players`;
+  //   return this.http.get(url,);
+  // }
+
+
+
+
+
+  
 
   dataNames: any = [
     { name: 'epl', docName: this.teams },
@@ -289,88 +317,89 @@ export class DataService {
 
   async getFavorite() {
     return new Promise<void>((resolve, reject) => {
-      onAuthStateChanged(this.auth, async (user) => {
-        if (!user) {
-          console.log('No user found');
-          resolve();
-          return;
-        }
-       try{
-        const userRef = doc(this.db, 'Users', user.uid);
-
-        // Use `onSnapshot` for real-time updates
-        const userDoc = await getDoc(userRef)
-            if (!userDoc.exists()) {
+      runInInjectionContext(this.injector, () => {
+        this.ngZone.run(() => {
+          onAuthStateChanged(this.auth, async (user) => {
+            if (!user) {
+              console.log('No user found');
               resolve();
               return;
             }
-            const userData = userDoc.data();
-            const favorites = userData?.['favorites'];
+            try {
+              const userRef = doc(this.db, 'Users', user.uid);
 
-            // Process favorite players
-            if (favorites.players?.length) {
-              const playerPromises = favorites.players.map(
-                async (playerId: string) => {
-                  const docRef = doc(this.db, 'players', playerId);
-                  return new Promise((playerResolve)=>{
-                  const unsubscribe = onSnapshot(docRef,(docSnap)=>{
-                  const data = docSnap.exists() ? docSnap.data() : null;
-                  playerResolve(data)
-                  unsubscribe();
-                  });
-                });
-            })
-              const players = await Promise.all(playerPromises);
-              this.favoPlay.set(players);
-            } else {
-              this.favoPlay.set([]);
-            }
-
-            // Process favorite clubs
-            if (favorites.clubs?.length) {
-              const clubPromises = favorites.clubs.map(
-                async (clubId: string) => {
-                  const docRef = doc(this.db, 'epl', clubId);
-                return new Promise((clubResolve)=>{
-                const unsubscribe = onSnapshot(docRef,(docSnap)=>{
-                 const data =docSnap.exists() ? docSnap.data() : null;
-                  clubResolve(data)
-                  unsubscribe();
-                  })
-                });
+              // Use `onSnapshot` for real-time updates
+              const userDoc = await getDoc(userRef);
+              if (!userDoc.exists()) {
+                resolve();
+                return;
               }
-              );
-              const clubs = await Promise.all(clubPromises);
-             this.fave.set(clubs);
-            } else {
-              this.fave.set([]);
-            }
-            // Save to cache after updating
-            this.saveFavoritesToCache();
-            resolve();
-          // },
-          }
-         catch (error) {
-            console.error('Get fave error:', error);
-            reject(error);
-          }
-        // );
+              const userData = userDoc.data();
+              const favorites = userData?.['favorites'];
 
+              // Process favorite players
+              if (favorites.players?.length) {
+                const playerPromises = favorites.players.map(
+                  async (playerId: string) => {
+                    const docRef = doc(this.db, 'players', playerId);
+                    return new Promise((playerResolve) => {
+                      const unsubscribe = onSnapshot(docRef, (docSnap) => {
+                        const data = docSnap.exists() ? docSnap.data() : null;
+                        playerResolve(data);
+                        unsubscribe();
+                      });
+                    });
+                  }
+                );
+                const players = await Promise.all(playerPromises);
+                this.favoPlay.set(players);
+              } else {
+                this.favoPlay.set([]);
+              }
+
+              // Process favorite clubs
+              if (favorites.clubs?.length) {
+                const clubPromises = favorites.clubs.map(
+                  async (clubId: string) => {
+                    const docRef = doc(this.db, 'epl', clubId);
+                    return new Promise((clubResolve) => {
+                      const unsubscribe = onSnapshot(docRef, (docSnap) => {
+                        const data = docSnap.exists() ? docSnap.data() : null;
+                        clubResolve(data);
+                        unsubscribe();
+                      });
+                    });
+                  }
+                );
+                const clubs = await Promise.all(clubPromises);
+                this.fave.set(clubs);
+              } else {
+                this.fave.set([]);
+              }
+              // Save to cache after updating
+              this.saveFavoritesToCache();
+              resolve();
+              // },
+            } catch (error) {
+              console.error('Get fave error:', error);
+              reject(error);
+            }
+            // );
+          });
+        });
       });
     });
   }
 
+  async goToFavoritesClub() {
+    await this.router.navigate(['favorites'], {
+      state: { showClubs: true },
+    });
+  }
 
-async goToFavoritesClub() {
-  await this.router.navigate(['favorites'], { 
-    state: { showClubs: true }
-  });
-}
- 
-async goToFavoritesPlayer() {
-  await this.router.navigate(['favorites'], { 
-    state: { showPlayers: true }})
-}
-
-
+  async goToFavoritesPlayer() {
+    await this.router.navigate(['favorites'], {
+      state: { showPlayers: true },
+    });
+  }
 }
