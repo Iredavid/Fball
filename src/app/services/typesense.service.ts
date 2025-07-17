@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { Client as TypesenseClient } from 'typesense';
 import { DataService } from './data.service';
 
@@ -8,8 +8,9 @@ import { DataService } from './data.service';
 export class TypesenseService {
   client = inject('TypesenseClient' as any) as TypesenseClient;
   dataService = inject(DataService);
+  resClub = signal<any>([])
+  resPlayer = signal<any>([])
 
-  // Updated schema to match your football data structure
   productSchema = {
     name: "football_clubs",
     fields: [
@@ -21,7 +22,6 @@ export class TypesenseService {
     ]
   };
 
-  // Player schema for your players collection
   playerSchema = {
     name: "football_players",
     fields: [
@@ -36,36 +36,11 @@ export class TypesenseService {
   private isInitialized = false;
 
   constructor() {
-    // Don't initialize immediately - wait for data to be ready
-    this.delayedInitialization();
+          // this.initializeCollections();
   }
 
-  private async delayedInitialization() {
-    // Wait a bit for DataService to be ready
-    setTimeout(() => {
-      this.initializeCollections();
-    }, 2000);
-  }
 
-  // Debug method to check your data structure
-  async debugDataStructure(): Promise<void> {
-    try {
-      await this.dataService.get();
-      
-      console.log('=== DATA STRUCTURE DEBUG ===');
-      console.log('Teams array length:', this.dataService.teams?.length || 0);
-      console.log('First team object:', this.dataService.teams?.[0]);
-      console.log('Team object keys:', this.dataService.teams?.[0] ? Object.keys(this.dataService.teams[0]) : 'No teams');
-      
-      console.log('Players array length:', this.dataService.profile?.length || 0);
-      console.log('First player object:', this.dataService.profile?.[0]);
-      console.log('Player object keys:', this.dataService.profile?.[0] ? Object.keys(this.dataService.profile[0]) : 'No players');
-      
-      console.log('=== END DEBUG ===');
-    } catch (error) {
-      console.error('Error debugging data structure:', error);
-    }
-  }
+
 
   // Method to import your teams array into Typesense
   async importTeamsArray(): Promise<void> {
@@ -79,31 +54,24 @@ export class TypesenseService {
       }
 
       // Debug: Log the raw data structure
-      console.log('Raw teams data:', this.dataService.teams.slice(0, 2));
+      console.log('Raw teams data:', this.dataService.teams);
 
       // Transform your teams data to match the schema
       const transformedTeams = this.dataService.teams
-        .filter(item => item && typeof item === 'object') // Filter out null/undefined items
-        .map((item, index) => ({
-          id: item.id || `team_${index}`,
-          clubName: item.clubName || item.name || `Unknown Club ${index}`,
-          history: item.history || item.description || '',
-          image: item.image || item.img || '',
-          favorites: Boolean(item.favorites)
+        .map((item) => ({
+          id: item.id,
+          clubName: item.clubName,
+          history: item.history,
+          image: item.image,
         }))
-        .filter(item => item.id && item.clubName); // Ensure required fields exist
+    
 
       // Debug: Log transformed data
-      console.log('Transformed teams data:', transformedTeams.slice(0, 2));
+      console.log('Transformed teams data:', transformedTeams);
       console.log('Total teams to import:', transformedTeams.length);
 
-      if (transformedTeams.length === 0) {
-        console.warn('No valid teams data to import after transformation');
-        return;
-      }
-
       // Import the data into Typesense
-      const result = await this.client.collections('football_clubs').documents().import(transformedTeams);
+      const result = await this.client.collections('football_clubs').documents().import(JSON.stringify(transformedTeams));
       console.log('Teams imported successfully:', result);
     } catch (error) {
       console.error('Error importing teams:', error);
@@ -111,15 +79,7 @@ export class TypesenseService {
       // Check if it's an ImportError and log detailed information
       if (error) {
         console.error('Import results:', error);
-        
-        // Log first few failed documents for debugging
-        // const failedDocs = error.filter((result: { success: any; }) => !result.success);
-        // console.error('Failed documents (first 5):', failedDocs.slice(0, 5));
-        
-        // Log specific errors
-        // failedDocs.slice(0, 5).forEach((doc: { error: any; }, index: any) => {
-        //   console.error(`Document ${index} error:`, doc.error);
-        // });
+
       }
       
       throw error;
@@ -153,7 +113,7 @@ export class TypesenseService {
         .filter(item => item.id && item.firstName && item.surnName); // Ensure required fields exist
 
       // Debug: Log transformed data
-      console.log('Transformed players data:', transformedPlayers.slice(0, 2));
+      console.log('Transformed players data:', transformedPlayers);
       console.log('Total players to import:', transformedPlayers.length);
 
       if (transformedPlayers.length === 0) {
@@ -162,23 +122,14 @@ export class TypesenseService {
       }
 
       // Import the data into Typesense
-      const result = await this.client.collections('football_players').documents().import(transformedPlayers);
+      const result = await this.client.collections('football_players').documents().import(JSON.stringify(transformedPlayers));
       console.log('Players imported successfully:', result);
     } catch (error) {
       console.error('Error importing players:', error);
       
-      // Check if it's an ImportError and log detailed information
       if (error) {
         console.error('Import results:', error);
-        
-        // Log first few failed documents for debugging
-        // const failedDocs = error.filter((result: { success: any; }) => !result.success);
-        // console.error('Failed documents (first 5):', failedDocs.slice(0, 5));
-        
-        // Log specific errors
-        // failedDocs.slice(0, 5).forEach((doc: { error: any; }, index: any) => {
-        //   console.error(`Document ${index} error:`, doc.error);
-        // });
+
       }
       
       throw error;
@@ -186,21 +137,18 @@ export class TypesenseService {
   }
 
   async initializeCollections() {
+    await this.dataService.get()
     if (this.isInitialized) return;
 
     try {
-      // Initialize clubs collection
       await this.initializeCollection('football_clubs', this.productSchema);
       
-      // Initialize players collection
       await this.initializeCollection('football_players', this.playerSchema);
       
       this.isInitialized = true;
       
-      // Add a small delay to ensure collections are ready
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Import data after collections are ready
       await this.importTeamsArray();
       await this.importPlayersArray();
       
@@ -216,10 +164,7 @@ export class TypesenseService {
       const existingCollection = await this.client.collections(collectionName).retrieve();
       console.log(`Collection ${collectionName} already exists:`, existingCollection);
       
-      // Optionally delete and recreate if schema has changed
-      // await this.client.collections(collectionName).delete();
-      // await this.client.collections().create(schema);
-      // console.log(`Collection ${collectionName} recreated`);
+  
       
     } catch (error) {
       // Collection doesn't exist, create it
@@ -243,7 +188,7 @@ export class TypesenseService {
     try {
       const searchParameters = {
         q: query,
-        query_by: 'clubName,history',
+        query_by: '*',
         filter_by: '',
         sort_by: '_text_match:desc',
         per_page: 10
@@ -263,7 +208,7 @@ export class TypesenseService {
     try {
       const searchParameters = {
         q: query,
-        query_by: 'firstName,surnName',
+        query_by: '*',
         filter_by: '',
         sort_by: '_text_match:desc',
         per_page: 10
@@ -279,17 +224,21 @@ export class TypesenseService {
   }
 
   // Generic search method (searches both collections)
-  async search(query: string): Promise<{ clubs: any[], players: any[] }> {
+  async search(query: string){
     try {
-      const [clubResults, playerResults] = await Promise.all([
-        this.searchClubs(query),
-        this.searchPlayers(query)
-      ]);
-
-      return {
-        clubs: clubResults,
-        players: playerResults
-      };
+      const clubResults= this.searchClubs(query)
+        const playerResults=this.searchPlayers(query)
+        this.resClub.set(JSON.parse(await clubResults))
+        this.resPlayer.set(JSON.parse(await playerResults))
+        
+        
+    
+      
+      // return {
+      //     clubs: clubResults,
+      //   players: playerResults
+      
+      // };
     } catch (error) {
       console.error('Search error:', error);
       throw error;

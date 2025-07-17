@@ -36,6 +36,7 @@ import {
   MenuController,
   AlertController,
 
+
 } from '@ionic/angular/standalone';
 import {
   ellipsisHorizontalOutline,
@@ -54,6 +55,7 @@ import {
   bookmark,
   personOutline,
   footballOutline,
+  arrowBackOutline,
 } from 'ionicons/icons';
 import { ExploreContainerComponent } from '../../environments/explore-container/explore-container.component';
 import { addIcons } from 'ionicons';
@@ -137,6 +139,7 @@ export class Tab1Page implements OnInit {
       notificationsOutline,
       homeOutline,
       pencilOutline,
+      arrowBackOutline,
     });
   }
 
@@ -235,5 +238,8 @@ export class Tab1Page implements OnInit {
   search(pam:string){
     console.log(pam);
     
+  }
+  OpenModal(){
+
   }
 }
