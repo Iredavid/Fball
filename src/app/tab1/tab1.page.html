@@ -102,11 +102,12 @@
 <div class="ion-page" id="main-content">
   <ion-header>
     <ion-item lines="none" class="top">
-      <ion-label class="searchbar"><ion-searchbar></ion-searchbar></ion-label>
+      <ion-label class="searchbar"><ion-searchbar [(ngModel)]="searchv"></ion-searchbar></ion-label>
       <ion-avatar slot="start" class="profile-pic" (click)="openFirstMenu()">
         <img src="assets/user.png" alt="" />
         <ion-badge></ion-badge>
       </ion-avatar>
+      <ion-button (click)="this.typeService.search(searchv)">search</ion-button>
     </ion-item>
 
     <ion-segment [scrollable]="true" mode="md">

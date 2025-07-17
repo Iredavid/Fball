@@ -35,6 +35,7 @@ import {
   IonButton,
   MenuController,
   AlertController,
+
 } from '@ionic/angular/standalone';
 import {
   ellipsisHorizontalOutline,
@@ -62,6 +63,8 @@ import { AuthserviceService } from '../services/authservice.service';
 import { getAuth, signOut } from 'firebase/auth';
 import { register } from 'swiper/element/bundle';
 import { ActivatedRoute } from '@angular/router';
+import { TypesenseService } from '../services/typesense.service';
+import { FormsModule } from '@angular/forms';
 register();
 @Component({
   selector: 'app-tab1',
@@ -96,14 +99,15 @@ register();
     IonButtons,
     IonMenuButton,
     IonButton,
+    FormsModule,
   ],
 })
 export class Tab1Page implements OnInit {
+  typeService = inject(TypesenseService)
   dataService = inject(DataService);
   router = inject(Router);
   menuCtrl = inject(MenuController);
   alertController = inject(AlertController);
-  // user:any
   route = inject(ActivatedRoute);
   Userdata: any;
   authservice = inject(AuthserviceService);
@@ -112,6 +116,7 @@ export class Tab1Page implements OnInit {
   varry: any;
   players: any;
   clubs: any;
+  searchv='';
 
   constructor() {
     this.dataService.get();
@@ -226,5 +231,9 @@ export class Tab1Page implements OnInit {
   }
   sendData(firstName: string, surnName: string, bgimg: string) {
     this.dataService.addPlayer(firstName, surnName, bgimg);
+  }
+  search(pam:string){
+    console.log(pam);
+    
   }
 }

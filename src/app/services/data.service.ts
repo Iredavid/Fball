@@ -60,12 +60,14 @@ export class DataService {
       console.log(this.fave());
       console.log(this.favoPlay());
     });
+    
   }
 
   // getUsers(palyer:any,) {
   //   const url = `${this.API_URL}/players`;
   //   return this.http.get(url,);
   // }
+
 
 
 

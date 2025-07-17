@@ -12,7 +12,19 @@ export const environment = {
   messagingSenderId: "257301522193",
   appId: "1:257301522193:web:0d7dd5b859f9c4c99c0eb0",
   measurementId: "G-SESG8Y4QV8"
-}
+},
+  typesense: {
+    nodes: [
+      {
+        host: '5q1yshdi3mg9r06tp.a1.typesense.net',
+        port: 443,
+        protocol: 'https'
+      }
+    ],
+    apiKey: 'oWc2yeXTTLTgp9DIqXdbLLH57GG4WLfe',
+        connectionTimeoutSeconds: 2
+
+  }
 };
 
 /*
