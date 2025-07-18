@@ -137,7 +137,6 @@ export class TypesenseService {
   }
 
   async initializeCollections() {
-    await this.dataService.get()
     if (this.isInitialized) return;
 
     try {
