@@ -46,13 +46,9 @@ export class DataService {
   dataFavorites: any;
   auth = inject(Auth);
   http = inject(HttpClient);
-  API_URL = 'https://v3.football.api-sports.io';
-  API_KEY = '23fdbb07e027825892692fbe35edab88';
 
-     headers = new HttpHeaders({
-           'Content-Type': 'application/json'
+  
 
-    });
 
   constructor() {
     this.loadCachedFavorites();

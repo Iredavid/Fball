@@ -86,10 +86,8 @@ export class TypesenseService {
     }
   }
 
-  // Method to import your players array into Typesense
   async importPlayersArray(): Promise<void> {
     try {
-      // Wait for data to be loaded first
       await this.dataService.get();
       
       if (!this.dataService.profile || this.dataService.profile.length === 0) {
@@ -98,7 +96,7 @@ export class TypesenseService {
       }
 
       // Debug: Log the raw data structure
-      console.log('Raw players data:', this.dataService.profile.slice(0, 2));
+      console.log('Raw players data:', this.dataService.profile);
 
       // Transform your players data to match the schema
       const transformedPlayers = this.dataService.profile
@@ -154,11 +152,11 @@ export class TypesenseService {
       
     } catch (error) {
       console.error('Error initializing collections:', error);
-      this.isInitialized = false; // Reset flag on error
+      this.isInitialized = false
     }
   }
 
-  private async initializeCollection(collectionName: string, schema: any) {
+  async initializeCollection(collectionName: string, schema: any) {
     try {
       // Check if collection exists
       const existingCollection = await this.client.collections(collectionName).retrieve();
@@ -224,25 +222,32 @@ export class TypesenseService {
   }
 
   // Generic search method (searches both collections)
-  async search(query: string){
+  async search(input: string){
+     const query= input.trim();
+
+    if (query===''){
+            
+      this.resClub.set([]);
+      console.log('emep');
+      
+      
+    }
+    else{
     try {
       const clubResults= this.searchClubs(query)
         const playerResults=this.searchPlayers(query)
-        this.resClub.set(JSON.parse(await clubResults))
-        this.resPlayer.set(JSON.parse(await playerResults))
         
-        
-    
+        this.resClub.set(await clubResults)
+        this.resPlayer.set(await playerResults)     
       
-      // return {
-      //     clubs: clubResults,
-      //   players: playerResults
+         
       
-      // };
+      
     } catch (error) {
       console.error('Search error:', error);
       throw error;
     }
+  }
   }
 
   // Method to add a new club document

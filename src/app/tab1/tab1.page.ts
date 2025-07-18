@@ -35,6 +35,10 @@ import {
   IonButton,
   MenuController,
   AlertController,
+  IonBackButton,
+   ModalController 
+  
+  
 
 
 } from '@ionic/angular/standalone';
@@ -67,6 +71,7 @@ import { register } from 'swiper/element/bundle';
 import { ActivatedRoute } from '@angular/router';
 import { TypesenseService } from '../services/typesense.service';
 import { FormsModule } from '@angular/forms';
+// import { ModalController } from '@ionic/angular';
 register();
 @Component({
   selector: 'app-tab1',
@@ -102,6 +107,8 @@ register();
     IonMenuButton,
     IonButton,
     FormsModule,
+    IonBackButton,
+    IonButtons,
   ],
 })
 export class Tab1Page implements OnInit {
@@ -119,6 +126,7 @@ export class Tab1Page implements OnInit {
   players: any;
   clubs: any;
   searchv='';
+  modalCtrl=inject(ModalController);
 
   constructor() {
     this.dataService.get();
@@ -148,6 +156,7 @@ export class Tab1Page implements OnInit {
   select: any;
   continents: any;
   footBall: any;
+  // modalCtrl = inject(ModalController)
 
   ngOnInit() {
     this.authservice.getUserProfile();
@@ -239,7 +248,8 @@ export class Tab1Page implements OnInit {
     console.log(pam);
     
   }
-  OpenModal(){
 
+  dismissModal() {
+    this.modalCtrl.dismiss();
   }
 }
