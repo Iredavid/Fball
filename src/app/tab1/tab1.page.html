@@ -102,7 +102,7 @@
   <ion-header>
     <ion-item lines="none" class="top">
       <ion-label class="searchbar"
-        ><ion-searchbar [(ngModel)]="searchv" id="open-modal"></ion-searchbar
+        ><ion-searchbar  id="open-modal"></ion-searchbar
       ></ion-label>
       <ion-avatar slot="start" class="profile-pic" (click)="openFirstMenu()">
         <img src="assets/user.png" alt="" />
@@ -120,24 +120,33 @@
       }
     </ion-segment>
   </ion-header>
-  <ion-modal trigger="open-modal" [initialBreakpoint]="0.8">
-    <ng-template>
+
+  <ion-modal
+    trigger="open-modal"
+  >
     <ion-header>
-      <ion-toolbar>
-      <ion-buttons slot="start">
-        <ion-back-button
-          defaultHref="/tabs/tab1"
-          text="erwef"
-          icon="arrow-back-outline"
-        ></ion-back-button>
-      </ion-buttons>
-      <ion-item>
-        <ion-input type="search" placeholder="Your name"></ion-input>
+      <ion-item lines="none">
+        <ion-icon slot="start" name="arrow-back-outline" (click)="dismissModal()"></ion-icon>
+        <ion-searchbar
+          placeholder="Show on Focus"
+          class="sech"
+          [(ngModel)]="searchv"
+          [debounce]="1000" 
+          (ionInput)="this.typeService.search(searchv)"
+        ></ion-searchbar>
       </ion-item>
-      </ion-toolbar>
     </ion-header>
-    <ion-content class="ion-padding"> </ion-content>
-  </ng-template>
+    <ion-content class="ion-padding"> 
+    <h1 class="les">Showing results of "{{searchv}}"</h1>
+
+<ion-list>
+  @for (result of this.typeService.resClub(); track result) {
+  <ion-item>
+    <ion-label>{{ result.document.clubName }}</ion-label>
+  </ion-item>
+  }
+</ion-list>
+    </ion-content>
   </ion-modal>
 
   <ion-content [fullscreen]="true">
