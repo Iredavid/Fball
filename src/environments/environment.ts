@@ -2,6 +2,7 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+
 export const environment = {
   production: false,
   firebaseConfig : {
@@ -23,6 +24,12 @@ export const environment = {
     ],
     apiKey: 'oWc2yeXTTLTgp9DIqXdbLLH57GG4WLfe',
         connectionTimeoutSeconds: 2
+
+  },
+
+  football:{
+    api:'/rapidapi',
+    apikey:'football98.p.rapidapi.com'
 
   }
 };

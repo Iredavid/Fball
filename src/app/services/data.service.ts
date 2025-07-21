@@ -25,8 +25,10 @@ import { Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular/standalone';
 import { AuthserviceService } from './authservice.service';
 import { onAuthStateChanged, Auth } from '@angular/fire/auth';
-import { Observable } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from '../../environments/environment';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Team, League } from '../api';
+import { Observable, observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
@@ -46,9 +48,9 @@ export class DataService {
   dataFavorites: any;
   auth = inject(Auth);
   http = inject(HttpClient);
-
-  
-
+  apiHost: string = ' free-api-live-football-data.p.rapidapi.com';
+  apiKey: string = '70039f9926msh4a8d4e44bcd3d67p13ce37jsn8882e061585a';
+  apiUrl: string = 'https://free-api-live-football-data.p.rapidapi.com/';
 
   constructor() {
     this.loadCachedFavorites();
@@ -56,23 +58,85 @@ export class DataService {
       console.log(this.fave());
       console.log(this.favoPlay());
     });
+  }
+
+  private getHeaders(): HttpHeaders {
+    return new HttpHeaders({
+      'X-RapidAPI-Key': this.apiKey,
+      'X-RapidAPI-Host': this.apiHost,
+    });
+  }
+
+  getLiveMatches() {
+    const headers = this.getHeaders();
+    this.http
+      .get<any>(
+        'https://free-api-live-football-data.p.rapidapi.com/football-get-list-all-team?leagueid=47',
+        { headers }
+      )
+      .subscribe((rec) => {
+        console.log(rec.response.list);
+        const results= rec.response.list;
+        results.forEach((ele: any)=>{this.teams.push(ele)})
+        console.log(this.teams);     
+      });
     
   }
 
-  // getUsers(palyer:any,) {
-  //   const url = `${this.API_URL}/players`;
-  //   return this.http.get(url,);
-  // }
+getCountries(){
+    const headers = this.getHeaders();
+    this.http
+      .get<any>(
+        'https://free-api-live-football-data.p.rapidapi.com/football-get-all-leagues-with-countries',
+        { headers }
+      ).subscribe((sul)=>{
+        console.log(sul);
+        
+      })
+}
+
+
+// Football-Data.org API - Get Leagues by Continent
+// Sign up at https://www.football-data.org/ for free API key
+
+// const API_KEY = 'YOUR_API_KEY';
+// const BASE_URL = 'https://api.football-data.org/v4';
+
+// const headers = {
+//   'X-Auth-Token': this.API_KEY
+// };
+
+
+
+// Get all areas (continents and countries)
+async  getAllAreas() {
+  try {
+    const response = await fetch('/api/competitions/PL');
+    const data = await response.json();
+    console.log(data);
+     data.areas;
+  } catch (error) {
+    console.error('Error fetching areas:', error);
+  }
+}
 
 
 
 
 
 
-  
+
+
+
+
+
+
+
+
+
 
   dataNames: any = [
-    { name: 'epl', docName: this.teams },
+    // { name: 'epl', docName: this.teams },
     { name: 'players', docName: this.profile },
     { name: 'continentsBest', docName: this.bestProfile },
   ];
@@ -123,6 +187,15 @@ export class DataService {
       console.error('Error saving favorites to cache:', error);
     }
   }
+// Continental Area IDs
+ CONTINENTS = {
+  EUROPE: 2077,
+  SOUTH_AMERICA: 2076,
+  NORTH_AMERICA: 2079,
+  ASIA: 2078,
+  AFRICA: 2081,
+  OCEANIA: 2080
+};
 
   continents: any = [
     { name: 'EUROPEAN' },

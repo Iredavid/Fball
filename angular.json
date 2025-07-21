@@ -23,9 +23,7 @@
               "browser": ""
             },
             "index": "src/index.html",
-            "polyfills": [
-              "src/polyfills.ts"
-            ],
+            "polyfills": ["src/polyfills.ts"],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -80,13 +78,17 @@
               "buildTarget": "app:build:production"
             },
             "development": {
-              "buildTarget": "app:build:development"
+              "buildTarget": "app:build:development",
+              "proxyConfig": "proxy.conf.json"
             },
             "ci": {
               "progress": false
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "development",
+          "options": {
+            "proxyConfig": "proxy.conf.json"
+          }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
@@ -129,7 +131,8 @@
     }
   },
   "cli": {
-    "schematicCollections": ["@ionic/angular-toolkit"]
+    "schematicCollections": ["@ionic/angular-toolkit"],
+    "analytics": false
   },
   "schematics": {
     "@ionic/angular-toolkit:component": {

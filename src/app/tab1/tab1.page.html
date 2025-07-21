@@ -101,14 +101,13 @@
 <div class="ion-page" id="main-content">
   <ion-header>
     <ion-item lines="none" class="top">
-      <ion-label class="searchbar"
-        ><ion-searchbar  id="open-modal"></ion-searchbar
-      ></ion-label>
-      <ion-avatar slot="start" class="profile-pic" (click)="openFirstMenu()">
+        <ion-avatar slot="start" class="profile-pic" (click)="openFirstMenu()">
         <img src="assets/user.png" alt="" />
         <ion-badge></ion-badge>
       </ion-avatar>
-      <ion-button (click)="this.typeService.search(searchv)">search</ion-button>
+    <ion-searchbar class="searchbar" id="open-modal"></ion-searchbar
+      >
+      <ion-icon slot="end" name="ellipsis-horizontal-outline" class="settings" (click)="this.dataService.getAllAreas()" ></ion-icon>
     </ion-item>
 
     <ion-segment [scrollable]="true" mode="md">
@@ -121,31 +120,33 @@
     </ion-segment>
   </ion-header>
 
-  <ion-modal
-    trigger="open-modal"
-  >
+  <ion-modal trigger="open-modal">
     <ion-header>
       <ion-item lines="none">
-        <ion-icon slot="start" name="arrow-back-outline" (click)="dismissModal()"></ion-icon>
+        <ion-icon
+          slot="start"
+          name="arrow-back-outline"
+          (click)="dismissModal()"
+        ></ion-icon>
         <ion-searchbar
           placeholder="Show on Focus"
           class="sech"
           [(ngModel)]="searchv"
-          [debounce]="1000" 
+          [debounce]="1000"
           (ionInput)="this.typeService.search(searchv)"
         ></ion-searchbar>
       </ion-item>
     </ion-header>
-    <ion-content class="ion-padding"> 
-    <h1 class="les">Showing results of "{{searchv}}"</h1>
+    <ion-content class="ion-padding">
+      <h1 class="les">Showing results of "{{searchv}}"</h1>
 
-<ion-list>
-  @for (result of this.typeService.resClub(); track result) {
-  <ion-item>
-    <ion-label>{{ result.document.clubName }}</ion-label>
-  </ion-item>
-  }
-</ion-list>
+      <ion-list>
+        @for (result of this.typeService.resClub(); track result) {
+        <ion-item>
+          <ion-label>{{ result.document.clubName }}</ion-label>
+        </ion-item>
+        }
+      </ion-list>
     </ion-content>
   </ion-modal>
 
@@ -226,7 +227,7 @@
                 @for(leagues of select; track leagues){
                 <ion-select-option>
                   <ion-item lines="none">
-                    <ion-label class="radio">{{leagues.name}}</ion-label>
+                    <ion-label class="radio"  >{{leagues.name}}</ion-label>
                     <ion-avatar slot="end">
                       <img src="{{leagues.img}}" alt="" />
                     </ion-avatar>
@@ -244,7 +245,7 @@
         <div class="image-grid">
           @for(clubs of footBall; track clubs){
           <a (click)="goToDetails(clubs.id, $event)">
-            <img src="{{clubs.image}}" alt="Image 1" />
+            <img src="{{clubs.logo}}" alt="Image 1" />
           </a>
           }
         </div>

@@ -168,7 +168,8 @@ export class Tab1Page implements OnInit {
     this.continents = this.dataService.continents;
     this.puser = this.authservice.statusCheck();
     console.log(this.authservice.puser);
-    // this.getUserCredential() ;
+    console.log(this.dataService.teams);
+    
   }
 
   // getUserCredential() {
