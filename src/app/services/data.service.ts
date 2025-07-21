@@ -51,7 +51,7 @@ export class DataService {
   apiHost: string = ' free-api-live-football-data.p.rapidapi.com';
   apiKey: string = '70039f9926msh4a8d4e44bcd3d67p13ce37jsn8882e061585a';
   apiUrl: string = 'https://free-api-live-football-data.p.rapidapi.com/';
-
+  select : any[] = []
   constructor() {
     this.loadCachedFavorites();
     effect(() => {
@@ -63,7 +63,8 @@ export class DataService {
   private getHeaders(): HttpHeaders {
     return new HttpHeaders({
       'X-RapidAPI-Key': this.apiKey,
-      'X-RapidAPI-Host': this.apiHost,
+      // 'X-RapidAPI-Host': this.apiHost,
+      'x-rapidapi-host': 'livescore6.p.rapidapi.com' 
     });
   }
 
@@ -71,69 +72,60 @@ export class DataService {
     const headers = this.getHeaders();
     this.http
       .get<any>(
-        'https://free-api-live-football-data.p.rapidapi.com/football-get-list-all-team?leagueid=47',
+         'https://livescore6.p.rapidapi.com/leagues/v2/list-popular?Category=soccer' ,
+        // 'https://free-api-live-football-data.p.rapidapi.com/football-get-list-all-team?leagueid=47',
         { headers }
       )
       .subscribe((rec) => {
-        console.log(rec.response.list);
-        const results= rec.response.list;
-        results.forEach((ele: any)=>{this.teams.push(ele)})
-        console.log(this.teams);     
+        console.log(rec);
+        // const results = rec.response.list;
+        // results.forEach((ele: any) => {
+        //   this.teams.push(ele);
+        // });
+        // console.log(this.teams);
       });
-    
   }
 
-getCountries(){
+  getCountries() {
     const headers = this.getHeaders();
     this.http
       .get<any>(
-        'https://free-api-live-football-data.p.rapidapi.com/football-get-all-leagues-with-countries',
+        'https://free-api-live-football-data.p.rapidapi.com/football-get-all-leagues',
         { headers }
-      ).subscribe((sul)=>{
+      )
+      .subscribe((sul) => {
         console.log(sul);
-        
-      })
-}
-
-
-// Football-Data.org API - Get Leagues by Continent
-// Sign up at https://www.football-data.org/ for free API key
-
-// const API_KEY = 'YOUR_API_KEY';
-// const BASE_URL = 'https://api.football-data.org/v4';
-
-// const headers = {
-//   'X-Auth-Token': this.API_KEY
-// };
-
-
-
-// Get all areas (continents and countries)
-async  getAllAreas() {
-  try {
-    const response = await fetch('/api/competitions/PL');
-    const data = await response.json();
-    console.log(data);
-     data.areas;
-  } catch (error) {
-    console.error('Error fetching areas:', error);
+      });
   }
-}
+
+  // Football-Data.org API - Get Leagues by Continent
+  // Sign up at https://www.football-data.org/ for free API key
+
+  // const API_KEY = 'YOUR_API_KEY';
+  // const BASE_URL = 'https://api.football-data.org/v4';
+
+  // const headers = {
+  //   'X-Auth-Token': this.API_KEY
+  // };
+
+ // this.http.get<any>('/api/competitions/PL').subscribe((sul) => {
+      //   console.log(sul);
+      // });
+  // Get all areas (continents and countries)
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
+  // async getAllAreas() {
+  //   try {
+     
+  //     const response = await fetch('/api/competitions/PL/matches?matchday=11');
+  //     const data =  response;
+  //     console.log(data);
+  //   } catch (error) {
+  //     console.error('Error fetching areas:', error);
+  //   }
+  // }
 
   dataNames: any = [
     // { name: 'epl', docName: this.teams },
@@ -187,39 +179,45 @@ async  getAllAreas() {
       console.error('Error saving favorites to cache:', error);
     }
   }
-// Continental Area IDs
- CONTINENTS = {
-  EUROPE: 2077,
-  SOUTH_AMERICA: 2076,
-  NORTH_AMERICA: 2079,
-  ASIA: 2078,
-  AFRICA: 2081,
-  OCEANIA: 2080
-};
 
+async getAllAreas(id:string) {
+  try {
+    const response = await fetch(`/api/competitions?areas=${id}`);
+    const data = await response.json();
+    console.log(data.competitions);
+     const res = data.competitions
+     res.forEach((el: any)=>{this.select.push(el)})
+     return this.select
+  } catch (error) {
+    console.error('Error fetching areas:', error);
+    throw error;
+  }
+}
   continents: any = [
-    { name: 'EUROPEAN' },
-    { name: 'ASIAN' },
-    { name: 'AFRICA' },
-    { name: 'OCEANIAN' },
-    { name: 'SOUTH AMERICAN' },
+  { id: 2077, name: "Europe", code: "EUR" },
+  { id: 2076, name: "South America", code: "SAM" },
+  { id: 2079, name: "North America", code: "NAM" },
+  { id: 2078, name: "Asia", code: "ASI" },
+  { id: 2081, name: "Africa", code: "AFR" },
+  { id: 2080, name: "Oceania", code: "OCE" }
+ 
   ];
 
-  select: any = [
-    { name: 'PREMIER LEAGUE', img: 'assets/pl.jpeg' },
 
-    {
-      name: 'BUNDESLIGA',
-      img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGbO4SfDbEpGSdMkCIo6ycGCe-f1snjVtIuZHqS2yOBrHOUTeOxqQhdT9Y_8sLdkrRJNo&usqp=CAU',
-    },
-    { name: 'PRIMERA LIGA', img: 'assets/bl.jpeg' },
-    { name: 'SERIE A', img: 'assets/lige.png' },
-    { name: 'LALIGA', img: 'assets/italy.jpeg' },
-    {
-      name: 'LIGUE 1',
-      img: 'https://i.pinimg.com/736x/e5/3c/58/e53c58f92500ab42db1b9f79f15397fd.jpg',
-    },
-  ];
+// Method 3: Get teams with season filter
+async getTeamsByLeagueAndSeason(competitionId: any, season = '2024') {
+  try {
+    const response = await fetch(`/api/competitions/${competitionId}/teams?season=${season}`);
+    const data = await response.json();
+    return data.teams;
+  } catch (error) {
+    console.error(`Error fetching teams for league ${competitionId} season ${season}:`, error);
+    return [];
+  }
+}
+
+
+
 
   async getItemById(id: string) {
     const dataRef = doc(this.db, `epl/${id}`);

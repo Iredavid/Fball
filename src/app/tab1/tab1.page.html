@@ -107,12 +107,12 @@
       </ion-avatar>
     <ion-searchbar class="searchbar" id="open-modal"></ion-searchbar
       >
-      <ion-icon slot="end" name="ellipsis-horizontal-outline" class="settings" (click)="this.dataService.getAllAreas()" ></ion-icon>
+      <ion-icon slot="end" name="ellipsis-horizontal-outline" class="settings" (click)="this.dataService.getLiveMatches()" ></ion-icon>
     </ion-item>
 
-    <ion-segment [scrollable]="true" mode="md">
+    <ion-segment [scrollable]="true" mode="md" (ionChange)="onCont()" [(ngModel)]="selectedCont">
       @for(segments of continents; track segments){
-      <ion-segment-button>
+      <ion-segment-button [value]="segments.id">
         <ion-label>{{segments.name}}</ion-label>
       </ion-segment-button>
 
@@ -223,13 +223,13 @@
         >
           <h1 class="lig">
             <strong>
-              <ion-select interface="popover" placeholder="LEAGUES">
+              <ion-select interface="popover" placeholder="LEAGUES" (ionChange)="onSelect()"[(ngModel)]="selectedLeague">
                 @for(leagues of select; track leagues){
-                <ion-select-option>
+                <ion-select-option [value]="leagues.id">
                   <ion-item lines="none">
                     <ion-label class="radio"  >{{leagues.name}}</ion-label>
                     <ion-avatar slot="end">
-                      <img src="{{leagues.img}}" alt="" />
+                      <img src="{{leagues.emblem}}" alt="" />
                     </ion-avatar>
                   </ion-item>
                 </ion-select-option>

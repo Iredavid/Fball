@@ -37,10 +37,6 @@ import {
   AlertController,
   IonBackButton,
    ModalController 
-  
-  
-
-
 } from '@ionic/angular/standalone';
 import {
   ellipsisHorizontalOutline,
@@ -71,7 +67,6 @@ import { register } from 'swiper/element/bundle';
 import { ActivatedRoute } from '@angular/router';
 import { TypesenseService } from '../services/typesense.service';
 import { FormsModule } from '@angular/forms';
-// import { ModalController } from '@ionic/angular';
 register();
 @Component({
   selector: 'app-tab1',
@@ -127,6 +122,8 @@ export class Tab1Page implements OnInit {
   clubs: any;
   searchv='';
   modalCtrl=inject(ModalController);
+  selectedCont: any;
+  selectedLeague: any;
 
   constructor() {
     this.dataService.get();
@@ -156,7 +153,6 @@ export class Tab1Page implements OnInit {
   select: any;
   continents: any;
   footBall: any;
-  // modalCtrl = inject(ModalController)
 
   ngOnInit() {
     this.authservice.getUserProfile();
@@ -172,13 +168,7 @@ export class Tab1Page implements OnInit {
     
   }
 
-  // getUserCredential() {
-  //   this.dataService.getUsers().subscribe({
-  //     next: (response) => {
-  //       console.log('API Response:', response);
-  //     },
-  //   });
-  // }
+
 
   goToDetails(id: string, event: any) {
     event.preventDefault();
@@ -253,4 +243,16 @@ export class Tab1Page implements OnInit {
   dismissModal() {
     this.modalCtrl.dismiss();
   }
+onCont(){
+
+  this.dataService.getAllAreas(this.selectedCont)
+}
+
+onSelect(){
+
+  console.log('working');
+  this.dataService.getTeamsByLeagueAndSeason(this.selectedLeague)
+  
+}
+
 }
