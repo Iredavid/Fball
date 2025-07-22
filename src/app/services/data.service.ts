@@ -63,8 +63,8 @@ export class DataService {
   private getHeaders(): HttpHeaders {
     return new HttpHeaders({
       'X-RapidAPI-Key': this.apiKey,
-      // 'X-RapidAPI-Host': this.apiHost,
-      'x-rapidapi-host': 'livescore6.p.rapidapi.com' 
+      'X-RapidAPI-Host': this.apiHost,
+      // 'x-rapidapi-host': 'livescore6.p.rapidapi.com' 
     });
   }
 
@@ -72,17 +72,12 @@ export class DataService {
     const headers = this.getHeaders();
     this.http
       .get<any>(
-         'https://livescore6.p.rapidapi.com/leagues/v2/list-popular?Category=soccer' ,
-        // 'https://free-api-live-football-data.p.rapidapi.com/football-get-list-all-team?leagueid=47',
+        //  'https://livescore6.p.rapidapi.com/leagues/v2/list-popular?Category=soccer' ,
+        'https://free-api-live-football-data.p.rapidapi.com/football-get-list-all-team?leagueid=47',
         { headers }
       )
       .subscribe((rec) => {
         console.log(rec);
-        // const results = rec.response.list;
-        // results.forEach((ele: any) => {
-        //   this.teams.push(ele);
-        // });
-        // console.log(this.teams);
       });
   }
 
@@ -127,6 +122,26 @@ export class DataService {
   //   }
   // }
 
+
+getSports(){
+
+const options = {
+  method: 'GET',
+  headers: {
+    'X-RapidAPI-Key': '70039f9926msh4a8d4e44bcd3d67p13ce37jsn8882e061585a',
+    'X-RapidAPI-Host': 'footapi7.p.rapidapi.com'
+  }
+
+};
+// Example: Premier League teams for current season
+fetch('https://footapi7.p.rapidapi.com/api/tournament/25/season/52186/teams', options)
+  .then(response => response.json())
+  .then(data => {
+    console.log('Teams:', data.teams || data);
+  });
+}
+
+
   dataNames: any = [
     // { name: 'epl', docName: this.teams },
     { name: 'players', docName: this.profile },
@@ -134,7 +149,6 @@ export class DataService {
   ];
 
   async get() {
-    // Use Promise.all to handle async operations properly
     const results = await Promise.all(
       this.dataNames.map(async (item: { name: string; docName: any[] }) => {
         let dataRef = collection(this.db, item.name); // Use item.name, not this.dataNames.name
@@ -207,7 +221,7 @@ async getAllAreas(id:string) {
 // Method 3: Get teams with season filter
 async getTeamsByLeagueAndSeason(competitionId: any, season = '2024') {
   try {
-    const response = await fetch(`/api/competitions/${competitionId}/teams?season=${season}`);
+    const response = await fetch(`/api/competitions/${competitionId}`);
     const data = await response.json();
     return data.teams;
   } catch (error) {

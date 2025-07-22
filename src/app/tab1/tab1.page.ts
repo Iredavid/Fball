@@ -244,13 +244,12 @@ export class Tab1Page implements OnInit {
     this.modalCtrl.dismiss();
   }
 onCont(){
-
   this.dataService.getAllAreas(this.selectedCont)
 }
 
 onSelect(){
 
-  console.log('working');
+  console.log(this.selectedLeague);
   this.dataService.getTeamsByLeagueAndSeason(this.selectedLeague)
   
 }
